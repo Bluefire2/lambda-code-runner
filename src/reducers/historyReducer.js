@@ -6,7 +6,7 @@ export default (state = null, action) => {
         case fulfilled(LOAD_FILE_ACTION):
             const {moves: history} = action.payload;
             console.log(history);
-            return history;
+            return {history, next: 0}; // no moves have been run so far
         default:
             return state
     }
