@@ -41,15 +41,21 @@ export const arrayBufferToString = buf =>
  * @return The new board state, after executing the runMove.
  */
 export const processMove = (board, move, forward) => {
-    // TODO: implement
     const {type, team, handle} = move;
     switch (type) {
         case MOVE.TYPE.MOVE:
             // move robot
             const {direction} = move,
-                robot = board.robots[handle],
-                [dx, dy] = directionToCoordinates(direction),
+                robot = board.robots[handle];
+
+            let [dx, dy] = directionToCoordinates(direction),
                 [x, y] = robot.xy;
+
+            // if the move is backwards, we invert the co-ordinate changes
+            if (!forward) {
+                [dx, dy] = [-dx, -dy];
+            }
+
             // update co-ordinates, checking bounds
             if (isBetween(0, board.width - 1, x + dx)
                 && isBetween(0, board.height, y + dy)) {
@@ -61,11 +67,16 @@ export const processMove = (board, move, forward) => {
             // TODO
             break;
         case MOVE.TYPE.SPAWN:
-            // spawn new robot
-            board.robots[handle] = {
-                team,
-                xy: [0, 0] // TODO: spawn on the team's home base
-            };
+            if (forward) {
+                // spawn new robot
+                board.robots[handle] = {
+                    team,
+                    xy: [0, 0] // TODO: spawn on the team's home base
+                };
+            } else {
+                // delete existing robot
+                delete board.robots[handle];
+            }
             break;
         default:
             // aaaaaaaaa
