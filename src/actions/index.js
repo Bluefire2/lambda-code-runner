@@ -3,10 +3,10 @@ import {arrayBufferToString} from "../util";
 export const MOVE_ACTION = "MOVE";
 export const LOAD_FILE_ACTION = "LOAD_FILE";
 
-export function move(direction) {
+export function runMove(direction, move) {
     return {
         type: MOVE_ACTION,
-        payload: direction
+        payload: {direction, move}
     };
 }
 
