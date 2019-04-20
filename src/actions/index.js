@@ -1,3 +1,5 @@
+import {arrayBufferToString} from "../util";
+
 export const MOVE_ACTION = "MOVE";
 export const LOAD_FILE_ACTION = "LOAD_FILE";
 
@@ -12,7 +14,10 @@ export function loadFile(file) {
     const reader = new FileReader();
 
     const fileReadHandle = new Promise((resolve, reject) => {
-        reader.onloadend = () => resolve(reader.result);
+        reader.onloadend = () => {
+            const text = arrayBufferToString(reader.result);
+            resolve(JSON.parse(text));
+        };
         reader.onerror = () => reject();
         reader.readAsBinaryString(file);
     });

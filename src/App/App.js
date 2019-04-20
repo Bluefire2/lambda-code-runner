@@ -16,7 +16,7 @@ class App extends Component {
                         Edit <code>src/App.js</code> and save to reload.
                     </p>
                     {/*For testing*/}
-                    <FieldFileInput label={"Hello"} types={".txt"} onChange={this.props.loadFile} />
+                    <FieldFileInput label={"Hello"} types={".json"} onChange={this.props.loadFile} />
                     <a
                         className="App-link"
                         href="https://reactjs.org"
