@@ -71,7 +71,7 @@ export const processMove = (board, move, forward) => {
                 // spawn new robot
                 board.robots[handle] = {
                     team,
-                    xy: [0, 0] // TODO: spawn on the team's home base
+                    xy: board.bases[team] // spawn at the home base location
                 };
             } else {
                 // delete existing robot
