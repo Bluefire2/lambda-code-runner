@@ -8,6 +8,9 @@
     "react-redux": "^7.0.2",
     "react-scripts": "2.1.8",
     "redux": "^4.0.1",
+    "redux-form": "^8.2.0",
+    "redux-promise": "^0.6.0",
+    "redux-promise-middleware": "^6.1.0",
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
@@ -24,5 +27,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "redux-devtools-extension": "^2.13.8"
+  }
 }

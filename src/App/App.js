@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import logo from '../logo.svg';
 import './App.css';
+import FieldFileInput from "../FieldFileInput";
+import {loadFile} from "../actions";
+import {bindActionCreators} from "redux";
 
 class App extends Component {
     render() {
@@ -11,6 +15,8 @@ class App extends Component {
                     <p>
                         Edit <code>src/App.js</code> and save to reload.
                     </p>
+                    {/*For testing*/}
+                    <FieldFileInput label={"Hello"} types={".txt"} onChange={this.props.loadFile} />
                     <a
                         className="App-link"
                         href="https://reactjs.org"
@@ -25,4 +31,10 @@ class App extends Component {
     }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => {
+    return bindActionCreators({
+        loadFile
+    }, dispatch);
+};
+
+export default connect(null, mapDispatchToProps)(App);
