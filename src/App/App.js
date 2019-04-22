@@ -5,6 +5,7 @@ import './App.css';
 import FieldFileInput from "../FieldFileInput";
 import {loadFile} from "../actions";
 import {bindActionCreators} from "redux";
+import MapContainer from "./MapContainer";
 
 class App extends Component {
     render() {
@@ -26,6 +27,7 @@ class App extends Component {
                         Learn React
                     </a>
                 </header>
+                <MapContainer/>
             </div>
         );
     }

@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 
 export default class FieldFileInput extends Component {
     constructor(props) {
@@ -15,7 +15,7 @@ export default class FieldFileInput extends Component {
 
     render() {
         const { label, types } = this.props;
-        return(
+        return (
             <div><label>{label}</label>
                 <div>
                     <input

@@ -3,7 +3,7 @@ import {LOAD_FILE_ACTION, MOVE_ACTION} from "../actions";
 
 // TODO: document board object schema
 
-export default (state = null, action) => {
+export default (state = {}, action) => {
     switch (action.type) {
         case fulfilled(LOAD_FILE_ACTION):
             // load new map

@@ -1,0 +1,38 @@
+.map-row {
+    display: flex;
+}
+
+.map-tile {
+    flex: 1;
+    margin: 1px;
+    height: 50px; /* todo */
+    line-height: 50px;
+}
+
+.path {
+    /* TODO: find a text colour that doesn't look disgusting on the grass background */
+    background-image:  url('./grass-background.png');
+    background-repeat: repeat;
+}
+
+.gold {
+    background-image:    url('gold-background.jpeg');
+    background-size:     contain;
+    background-repeat:   no-repeat;
+    background-position: center center;
+    color: gold;
+}
+
+.wall {
+    background-image:  url('./wall-background.jpeg');
+    background-repeat: repeat;
+}
+
+.base {
+    margin: 0;
+    border: 1px solid black;
+    background-image:    url('homebase-background.png');
+    background-size:     contain;
+    background-repeat:   no-repeat;
+    background-position: center center;
+}
