@@ -11,9 +11,8 @@ export function runMove(direction, move) {
 }
 
 export function loadFile(file) {
-    const reader = new FileReader();
-
     const fileReadHandle = new Promise((resolve, reject) => {
+        const reader = new FileReader();
         reader.onloadend = () => {
             const text = reader.result instanceof ArrayBuffer ? arrayBufferToString(reader.result) : reader.result;
             resolve(JSON.parse(text));
