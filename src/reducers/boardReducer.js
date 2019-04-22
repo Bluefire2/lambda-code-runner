@@ -37,6 +37,7 @@ const getBases = map => {
             }
         }
     }
+    return bases;
 };
 
 /**
