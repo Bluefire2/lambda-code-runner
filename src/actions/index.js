@@ -15,7 +15,7 @@ export function loadFile(file) {
 
     const fileReadHandle = new Promise((resolve, reject) => {
         reader.onloadend = () => {
-            const text = arrayBufferToString(reader.result);
+            const text = typeof reader.result === "ArrayBuffer" ? arrayBufferToString(reader.result) : reader.result;
             resolve(JSON.parse(text));
         };
         reader.onerror = () => reject();
