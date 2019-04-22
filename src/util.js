@@ -5,9 +5,9 @@ export const DIRECTION = {
 
 export const MOVE = {
     TYPE: {
-        TAKE: "take",
-        MOVE: "move",
-        SPAWN: "spawn"
+        TAKE: "Take",
+        MOVE: "Move",
+        SPAWN: "Spawn"
     },
     DIRECTION: {
         N: "N",
