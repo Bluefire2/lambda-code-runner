@@ -28,6 +28,8 @@ export const TILE = {
     GOLD: "Gold"
 };
 
+const TAKE_GOLD_AMOUNT = 10; // TODO: what is the actual value of this?
+
 export const pending = name => name + "_PENDING";
 export const fulfilled = name => name + "_FULFILLED";
 export const rejected = name => name + "_REJECTED";
@@ -50,7 +52,7 @@ export const arrayBufferToString = buf =>
 export const processMove = (board, move, forward) => {
     const {type, team, handle} = move;
     switch (type) {
-        case MOVE.TYPE.MOVE:
+        case MOVE.TYPE.MOVE: {
             // move robot
             const {direction} = move,
                 robot = board.robots[handle];
@@ -69,11 +71,36 @@ export const processMove = (board, move, forward) => {
                 robot.xy = [x + dx, y + dy];
             }
             break;
-        case MOVE.TYPE.TAKE:
-            // take gold
-            // TODO
+        }
+        case MOVE.TYPE.TAKE: {
+            // take/return gold
+            const {direction} = move,
+                robot = board.robots[handle],
+                [x, y] = robot.xy,
+                [dx, dy] = directionToCoordinates(direction),
+                tile = board.map[x + dx][y + dy];
+
+            if (tile.type === TILE.GOLD) {
+                if (forward) {
+                    // take some gold from the pile, if there's any left
+                    if (tile.amount > 0) {
+                        // move gold from pile into the team's score counter
+                        let goldTaken = Math.min(TAKE_GOLD_AMOUNT, tile.amount);
+                        tile.amount -= goldTaken;
+                        board.teams[team] += goldTaken;
+                    }
+                } else {
+                    // return gold to pile
+                    // no need to check that the team has more than zero since this is an inverse move
+                    // TODO: implement this part
+                }
+            } else {
+                // ?????
+                // TODO: can we assume that every move is valid
+            }
             break;
-        case MOVE.TYPE.SPAWN:
+        }
+        case MOVE.TYPE.SPAWN: {
             if (forward) {
                 // spawn new robot
                 board.robots[handle] = {
@@ -85,6 +112,7 @@ export const processMove = (board, move, forward) => {
                 delete board.robots[handle];
             }
             break;
+        }
         default:
             // aaaaaaaaa
     }

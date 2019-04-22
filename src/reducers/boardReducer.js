@@ -9,8 +9,17 @@ export default (state = null, action) => {
             // load new map
             const {map, width, height, teams} = action.payload,
                 squaredMap = squarify(map, width),
-                bases = getBases(squaredMap);
-            return {map: squaredMap, width, height, teams, bases, robots: {}}; // no robots at the start
+                bases = getBases(squaredMap),
+                teamsWithScores = {};
+            teams.forEach(team => teamsWithScores[team] = 0);
+            return {
+                map: squaredMap,
+                width,
+                height,
+                teams: teamsWithScores,
+                bases,
+                robots: {} // no robots at the start
+            };
         case MOVE_ACTION:
             // make a move!
             const {direction, move} = action.payload;
