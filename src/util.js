@@ -21,6 +21,13 @@ export const MOVE = {
     }
 };
 
+export const TILE = {
+    BASE: "Base",
+    WALL: "Wall",
+    PATH: "Path",
+    GOLD: "Gold"
+};
+
 export const pending = name => name + "_PENDING";
 export const fulfilled = name => name + "_FULFILLED";
 export const rejected = name => name + "_REJECTED";

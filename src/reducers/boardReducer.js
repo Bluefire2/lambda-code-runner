@@ -1,4 +1,4 @@
-import {fulfilled, processMove} from "../util";
+import {fulfilled, processMove, TILE} from "../util";
 import {LOAD_FILE_ACTION, MOVE_ACTION} from "../actions";
 
 // TODO: document board object schema
@@ -7,9 +7,10 @@ export default (state = null, action) => {
     switch (action.type) {
         case fulfilled(LOAD_FILE_ACTION):
             // load new map
-            const {map} = action.payload,
-                bases = getBases(map);
-            return {map, bases, robots: {}}; // no robots at the start
+            const {map, width, height, teams} = action.payload,
+                squaredMap = squarify(map, width),
+                bases = getBases(squaredMap);
+            return {map: squaredMap, width, height, teams, bases, robots: {}}; // no robots at the start
         case MOVE_ACTION:
             // make a move!
             const {direction, move} = action.payload;
@@ -26,5 +27,42 @@ export default (state = null, action) => {
  * @return An object mapping team names to home base locations.
  */
 const getBases = map => {
-    // TODO: implement
+    const bases = {};
+    for (let i = 0; i < map.length; i++) {
+        const row = map[i];
+        for (let j = 0; j < row.length; j++) {
+            const elem = row[j];
+            if (elem.type === TILE.BASE) {
+                bases[elem.team] = [i, j];
+            }
+        }
+    }
+};
+
+/**
+ * Convert a 1-dimensional representation with a given width into a 2-dimensional representation. Note that the mapping
+ * goes row-by-row, not column-by-column, i.e. if the width is {@code n}, then the first {@code n} cells represent the
+ * first row of the 2D representation.
+ *
+ * @param map The array.
+ * @param width The width of the 2D representation.
+ * @return {Array} The 2D representation.
+ */
+const squarify = (map, width) => {
+    const squareMap = [];
+    let row = 0, column = 0;
+    for (let i = 0; i < map.length; i++) {
+        if (squareMap[row] === void 0) {
+            squareMap[row] = [];
+        }
+        squareMap[row][column] = map[i];
+
+        if (column < width - 1) {
+            column++;
+        } else {
+            column = 0;
+            row++;
+        }
+    }
+    return squareMap;
 };
