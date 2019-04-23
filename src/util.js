@@ -145,4 +145,10 @@ const directionToCoordinates = direction => {
     }
 };
 
+/**
+ * Convert a board move to a string representation that can be shown to the user.
+ *
+ * @param move The move data.
+ * @return {string} The string representation.
+ */
 export const moveToString = move => JSON.stringify(move); // TODO: implement this
