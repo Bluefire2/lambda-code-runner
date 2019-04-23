@@ -2,7 +2,7 @@ import React from 'react';
 import "../style.css";
 import {TILE} from "../../../../util";
 
-export default ({tile, key}) => {
+export default ({tile}) => {
     const {type} = tile,
         style = {};
     if (type === TILE.BASE) {
@@ -17,7 +17,7 @@ export default ({tile, key}) => {
     }
 
     return (
-        <div key={key} style={style} className={`map-tile ${type.toLowerCase()}`}>
+        <div style={style} className={`map-tile ${type.toLowerCase()}`}>
             {contents}
         </div>
     )

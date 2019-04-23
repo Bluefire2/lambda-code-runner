@@ -8,7 +8,7 @@ export default ({tiles}) => {
     return (
         <div className="map-row">
             {tiles.map((tile, index) =>
-                <MapTile reactKey={index} tile={tile} />
+                <MapTile key={index} tile={tile} />
             )}
         </div>
     )
