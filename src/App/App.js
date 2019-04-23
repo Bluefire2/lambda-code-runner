@@ -10,6 +10,11 @@ import MovesListContainer from "./MovesListContainer";
 
 class App extends Component {
     render() {
+        let {height} = this.props;
+        if (height === void 0) {
+            height = 0;
+        }
+
         return (
             <div className="App">
                 <header className="App-header">
@@ -28,7 +33,7 @@ class App extends Component {
                         Learn React
                     </a>
                 </header>
-                <div id="data" style={{height: 52 * this.props.height}}>
+                <div id="data" style={{height: 52 * height}}>
                     <div style={{flex: 2}}>
                         <MapContainer/>
                     </div>
