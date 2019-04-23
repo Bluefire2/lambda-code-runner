@@ -6,6 +6,7 @@ import FieldFileInput from "../FieldFileInput";
 import {loadFile} from "../actions";
 import {bindActionCreators} from "redux";
 import MapContainer from "./MapContainer";
+import MovesListContainer from "./MovesListContainer";
 
 class App extends Component {
     render() {
@@ -27,11 +28,22 @@ class App extends Component {
                         Learn React
                     </a>
                 </header>
-                <MapContainer/>
+                <div id="data" style={{height: 52 * this.props.height}}>
+                    <div style={{flex: 2}}>
+                        <MapContainer/>
+                    </div>
+                    <div style={{flex: "1", overflowY: "scroll", overflowX: "auto"}}>
+                        <MovesListContainer/>
+                    </div>
+                </div>
             </div>
         );
     }
 }
+
+const mapStateToProps = ({board: {height}}) => {
+    return {height};
+};
 
 const mapDispatchToProps = dispatch => {
     return bindActionCreators({
@@ -39,4 +51,4 @@ const mapDispatchToProps = dispatch => {
     }, dispatch);
 };
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

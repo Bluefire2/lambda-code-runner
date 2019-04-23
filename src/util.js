@@ -144,3 +144,5 @@ const directionToCoordinates = direction => {
             return [0, 0]; // ??????
     }
 };
+
+export const moveToString = move => JSON.stringify(move); // TODO: implement this

@@ -1,0 +1,9 @@
+p.move-element {
+    font-family: monospace;
+    color: dimgrey;
+}
+
+p.move-element.next-move {
+    font-weight: bold;
+    color: green;
+}
