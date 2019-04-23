@@ -146,7 +146,7 @@ const directionToCoordinates = direction => {
 };
 
 /**
- * Convert a board move to a string representation that can be shown to the user.
+ * Convert a board move to a *concise* string representation that can be shown to the user.
  *
  * @param move The move data.
  * @return {string} The string representation.
