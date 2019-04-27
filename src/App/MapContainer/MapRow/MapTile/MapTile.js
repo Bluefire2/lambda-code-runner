@@ -1,9 +1,11 @@
 import React from 'react';
 import "../style.css";
 import {TILE} from "../../../../util";
-import {TEAM} from "../../../../util";
 
-export default ({tile}) => {
+import redBot from '../red_robot_128.svg';
+import blueBot from '../blue_robot_128.svg';
+
+export default ({tile, robots, x, y}) => {
     const {type} = tile,
         style = {};
     if (type === TILE.BASE) {
@@ -17,9 +19,25 @@ export default ({tile}) => {
         contents = tile.cost;
     }
 
+    let bot = null;
+    const botEntries = Object.entries(robots);
+    for (const [handle, value] of botEntries) {
+        if (value.xy[0] === x && value.xy[1] === y) {
+            if (value.team === "Red") {
+                bot = <img className="bot-img" src={redBot} alt="RBot" />;
+            } else if (value.team === "Blue") {
+                bot = <img className="bot-img" src={blueBot} alt="RBot" />;
+            }
+            console.log("has robot on " + x + y);
+            break;
+        }
+    }
+
+
     return (
         <div style={style} className={`map-tile ${type.toLowerCase()}`}>
             {contents}
+            {bot}
         </div>
     )
 }

@@ -8,6 +8,17 @@
     height: 30px; /* todo */
     width: 30px;
     line-height: 30px;
+    z-index: 0;
+    position: relative;
+}
+
+.bot-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 42;
+    top: 0;
+    right: 0;
 }
 
 .path {

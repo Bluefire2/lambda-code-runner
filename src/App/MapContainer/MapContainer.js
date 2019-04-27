@@ -16,7 +16,7 @@ class MapContainer extends Component {
         }
         // TODO: make sure we can use index as the key here
         const rows = map.map((mapRow, index) => {
-            return <MapRow tiles={mapRow} key={index} />
+            return <MapRow tiles={mapRow} key={index} robots={robots} y={index}/>
         });
 
         return (

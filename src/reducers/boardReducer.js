@@ -10,8 +10,14 @@ export default (state = {}, action) => {
             const {map, width, height, teams, max_gold, max_bots} = action.payload,
                 squaredMap = squarify(map, height, width),
                 bases = getBases(squaredMap),
+                // for testing: delete after processMove is done.
+                testBots = {
+                    0: {team: "Red", xy: bases["Red"]},
+                    1: {team: "Blue", xy: bases["Blue"]},
+                    },
                 teamsWithScores = {};
             teams.forEach(team => teamsWithScores[team] = 0);
+            console.log(bases);
             return {
                 map: squaredMap,
                 max_gold,
@@ -21,7 +27,7 @@ export default (state = {}, action) => {
                 teams: teamsWithScores,
                 teamNames: teams,
                 bases,
-                robots: {} // no robots at the start
+                robots: testBots // no robots at the start
             };
         case MOVE_ACTION:
             // make a move!
@@ -45,7 +51,7 @@ const getBases = map => {
         for (let j = 0; j < row.length; j++) {
             const elem = row[j];
             if (elem.type === TILE.BASE) {
-                bases[elem.team] = [i, j];
+                bases[elem.team] = [j, i];
             }
         }
     }
