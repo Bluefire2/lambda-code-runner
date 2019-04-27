@@ -8,7 +8,7 @@ export default (state = {}, action) => {
         case fulfilled(LOAD_FILE_ACTION):
             // load new map
             const {map, width, height, teams, max_gold, max_bots} = action.payload,
-                squaredMap = squarify(map, width),
+                squaredMap = squarify(map, height, width),
                 bases = getBases(squaredMap),
                 teamsWithScores = {};
             teams.forEach(team => teamsWithScores[team] = 0);
@@ -58,10 +58,11 @@ const getBases = map => {
  * first row of the 2D representation.
  *
  * @param map The array.
+ * @param height The height of the 2D representation.
  * @param width The width of the 2D representation.
  * @return {Array} The 2D representation.
  */
-const squarify = (map, width) => {
+const squarify = (map, height, width) => {
     const squareMap = [];
     let row = 0, column = 0;
     for (let i = 0; i < map.length; i++) {
@@ -70,11 +71,17 @@ const squarify = (map, width) => {
         }
         squareMap[row][column] = map[i];
 
-        if (column < width - 1) {
-            column++;
+        // if (column < width - 1) {
+        //     column++;
+        // } else {
+        //     column = 0;
+        //     row++;
+        // }
+        if (row < height - 1) {
+            row ++;
         } else {
-            column = 0;
-            row++;
+            column++;
+            row = 0;
         }
     }
     return squareMap;
