@@ -7,16 +7,19 @@ export default (state = {}, action) => {
     switch (action.type) {
         case fulfilled(LOAD_FILE_ACTION):
             // load new map
-            const {map, width, height, teams} = action.payload,
+            const {map, width, height, teams, max_gold, max_bots} = action.payload,
                 squaredMap = squarify(map, width),
                 bases = getBases(squaredMap),
                 teamsWithScores = {};
             teams.forEach(team => teamsWithScores[team] = 0);
             return {
                 map: squaredMap,
+                max_gold,
+                max_bots,
                 width,
                 height,
                 teams: teamsWithScores,
+                teamNames: teams,
                 bases,
                 robots: {} // no robots at the start
             };

@@ -16,7 +16,8 @@ export default class FieldFileInput extends Component {
     render() {
         const { label, types } = this.props;
         return (
-            <div><label>{label}</label>
+            <div>
+                <div id="section-head">{label}</div>
                 <div>
                     <input
                         type='file'
