@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import './App.css';
 import Header from './Header';
+import EditorGrid from './EditorGrid';
 import MapContainer from "./MapContainer";
 import MovesListContainer from "./MovesListContainer";
 import {loadFile} from "../actions";
@@ -24,7 +25,9 @@ class App extends Component {
                     <div style={{flex: "1", overflowY: "scroll", overflowX: "auto"}}>
                         <MovesListContainer/>
                     </div>
+                    <br/>
                 </div>
+                <EditorGrid/>
             </div>
         );
     }

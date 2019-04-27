@@ -25,7 +25,8 @@ export const TILE = {
     BASE: "Base",
     WALL: "Wall",
     PATH: "Path",
-    GOLD: "Gold"
+    GOLD: "Gold",
+    WORM: "Wormhole"
 };
 
 

@@ -1,0 +1,133 @@
+/* All Cells */
+
+.table-drag-select {
+    width: 100%;
+    overflow: scroll;
+    color: white;
+}
+.table-drag-select td{
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+    max-width: 30px;
+    max-height: 30px;
+    border: 1px solid transparent;
+    position: relative;
+    overflow: hidden;
+    color: white;
+}
+
+/* Cells that can be interacted with */
+.table-drag-select td.cell-enabled {
+    color: white;
+    background-color: #FBF1E8;
+}
+
+/* Cells that cannot be interacted with */
+.table-drag-select td.cell-disabled {
+/* Put yer css here */
+}
+
+/* Cells that have been selected */
+.table-drag-select td.cell-selected {
+    background-color: #FBD5D4;
+    border: 2px solid black;
+}
+
+/* Cells that are in the process of being selected */
+.table-drag-select td.cell-being-selected {
+    background-color: #EACA96;
+}
+
+/* Cells in first row */
+.table-drag-select tr:first-child td {
+    /* Remove empty space at top of table */
+    border-top: 0;
+}
+
+/* Cells in first column */
+.table-drag-select td:first-child {
+    /* Consume less whitespace */
+}
+
+.path {
+    /* TODO: find a text colour that doesn't look disgusting on the grass background */
+    background-image:  url('../../images/grass-background.png');
+    background-repeat: repeat;
+    color: white;
+}
+
+.gold {
+    background-image:    url('../../images/gold-background.jpeg');
+    background-size:     contain;
+    background-repeat:   no-repeat;
+    background-position: center center;
+    color: gold;
+}
+
+.wall {
+    background-image:  url('../../images/wall-background.jpeg');
+    background-repeat: repeat;
+}
+
+.worm {
+    background-image:  url('../../images/wormhole.png');
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.edit {
+    background-image:  url('../../images/edit.png');
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.done {
+    background-image:  url('../../images/done.png');
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.base {
+    margin: 0;
+    border: 1px solid black;
+    background-image:    url('../../images/homebase-background.png');
+    background-size:     contain;
+    background-repeat:   no-repeat;
+    background-position: center center;
+}
+
+.base-red {
+    margin: 0;
+    background-image:    url('../../images/homebase_red.png');
+    background-size:     contain;
+    background-repeat:   no-repeat;
+    background-position: center center;
+}
+
+.base-blue {
+    margin: 0;
+    background-image:    url('../../images/homebase_blue.png');
+    background-size:     contain;
+    background-repeat:   no-repeat;
+    background-position: center center;
+}
+
+#toolBox {
+    display: flex;  
+}
+
+.tool-item {
+    width: 40px;
+    height: 40px;
+    position: relative;
+}
+
+#toolBox .selected {
+    border: 2px solid gold;
+}
