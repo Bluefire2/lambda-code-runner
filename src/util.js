@@ -28,6 +28,11 @@ export const TILE = {
     GOLD: "Gold"
 };
 
+export const TEAM = {
+    RED: "Red",
+    BLUE: "Blue"
+}
+
 const TAKE_GOLD_AMOUNT = 10; // TODO: what is the actual value of this?
 
 export const pending = name => name + "_PENDING";

@@ -5,8 +5,9 @@
 .map-tile {
     flex: 1;
     margin: 1px;
-    height: 50px; /* todo */
-    line-height: 50px;
+    height: 30px; /* todo */
+    width: 30px;
+    line-height: 30px;
 }
 
 .path {

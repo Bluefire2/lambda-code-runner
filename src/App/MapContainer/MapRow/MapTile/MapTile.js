@@ -1,6 +1,7 @@
 import React from 'react';
 import "../style.css";
 import {TILE} from "../../../../util";
+import {TEAM} from "../../../../util";
 
 export default ({tile}) => {
     const {type} = tile,
