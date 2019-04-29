@@ -83,6 +83,8 @@ class EditorGrid extends Component {
                 let curry = y;
                 let cell = this.state.grid[curry][currx];
                 if (cell.type === TILE.PATH) {
+                    console.log('render');
+                    console.log(cell.cost);
                     row.push(
                         <td className={classNames('grid', 'path')}
                          key={currx + "|" + curry}>
@@ -129,6 +131,7 @@ class EditorGrid extends Component {
         let x = pos[0];
         let y = pos[1];
         if (field === 'cost') {
+            console.log('change cost');
             newGrid[y][x] = {
                 type: TILE.PATH,
                 cost: newValue
@@ -154,7 +157,9 @@ class EditorGrid extends Component {
 
         this.setState({
             grid: newGrid
-        })
+        });
+
+        this.forceUpdate();
         
     }
 
@@ -162,7 +167,6 @@ class EditorGrid extends Component {
         const pos = this.state.editTile;
         let form = "";
         if (pos !== null && pos !== undefined) {
-            console.log(pos);
             const tile = this.state.grid[pos[1]][pos[0]];
             if (tile.type === TILE.PATH) {
                 form = 
@@ -178,13 +182,15 @@ class EditorGrid extends Component {
                     />
                     </div>
             } else if (tile.type === TILE.GOLD) {
+                let posy = pos[1];
+                let posx = pos[0];
                 form = 
                     <div className="edit-item">
                     <div className="edit-item-label">Amount: </div>
                     <input 
                     key={1}
                     type="number" 
-                    value={this.state.grid[pos[1]][pos[0]].amount}
+                    value={this.state.grid[posy][posx].amount}
                     onChange={(e)=>this.updateEditResult(
                         pos, 'amount',
                         Number(e.target.value))}
