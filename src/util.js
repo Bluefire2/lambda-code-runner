@@ -71,11 +71,42 @@ export const processMove = (board, move, forward) => {
                 && isBetween(0, board.height, y + dy)) {
                 robot.xy = [x + dx, y + dy];
             }
+
+            // check if moving to homebase
+            for (let i = 0; i < board.teamNames; i++) {
+                let currTeam = board.teamNames[i];
+                let [baseX, baseY] = board.bases[currTeam];
+                if (baseX === robot.xy[0] && baseY === robot.xy[1]) {
+                    //moving to base
+                    if (forward) {
+                        //add robot's gold to the base team
+                        board.teams[currTeam] += robot.gold;
+                        robot.lastDeposit.push(robot.gold);
+                        robot.gold = 0;
+                    }
+                }
+                
+                if (baseX === x && baseY === y) {
+                    //moving from base
+                    if (!forward) {
+                        //add gold back to robot
+                        let lastDepo = robot.lastDeposit.pop();
+                        if (lastDepo !== undefined) {
+                            board.teams[currTeam] -= lastDepo;
+                            robot.gold += lastDepo;
+                        } else {
+                            //should not happen
+                            console.log("stepping back with undefined last deposit");
+                        }
+                    }
+                }
+            }
+
             break;
         }
         case MOVE.TYPE.TAKE: {
             // take/return gold
-            const {direction} = move,
+            const {direction, amount} = move,
                 robot = board.robots[handle],
                 [x, y] = robot.xy,
                 [dx, dy] = directionToCoordinates(direction),
@@ -84,20 +115,20 @@ export const processMove = (board, move, forward) => {
             if (tile.type === TILE.GOLD) {
                 if (forward) {
                     // take some gold from the pile, if there's any left
-                    if (tile.amount > 0) {
+                    if (amount > 0) {
                         // move gold from pile into the team's score counter
-                        let goldTaken = Math.min(TAKE_GOLD_AMOUNT, tile.amount);
-                        tile.amount -= goldTaken;
-                        board.teams[team] += goldTaken;
+                        tile.amount -= amount;
+                        robot.gold += amount;
                     }
                 } else {
                     // return gold to pile
-                    // no need to check that the team has more than zero since this is an inverse move
-                    // TODO: implement this part
+                    tile.amount += amount;
+                    robot.gold -= amount;
                 }
             } else {
                 // ?????
                 // TODO: can we assume that every move is valid
+                console.log("invalid move");
             }
             break;
         }
@@ -106,7 +137,9 @@ export const processMove = (board, move, forward) => {
                 // spawn new robot
                 board.robots[handle] = {
                     team,
-                    xy: board.bases[team] // spawn at the home base location
+                    xy: board.bases[team], // spawn at the home base location
+                    gold: 0,
+                    lastDeposit: []
                 };
             } else {
                 // delete existing robot
