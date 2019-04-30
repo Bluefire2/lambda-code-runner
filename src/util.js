@@ -28,9 +28,6 @@ export const TILE = {
     GOLD: "Gold"
 };
 
-
-const TAKE_GOLD_AMOUNT = 10; // TODO: what is the actual value of this?
-
 export const pending = name => name + "_PENDING";
 export const fulfilled = name => name + "_FULFILLED";
 export const rejected = name => name + "_REJECTED";
@@ -125,10 +122,6 @@ export const processMove = (board, move, forward) => {
                     tile.amount += amount;
                     robot.gold -= amount;
                 }
-            } else {
-                // ?????
-                // TODO: can we assume that every move is valid
-                console.log("invalid move");
             }
             break;
         }
