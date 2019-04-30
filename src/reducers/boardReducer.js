@@ -43,8 +43,8 @@ export default (state = initialState, action) => {
             };
         case MOVE_ACTION:
             // make a move!
-            const {direction, move} = action.payload;
-            return processMove(state, move, direction);
+            const {forward, move} = action.payload;
+            return processMove(state, move, forward);
         default:
             return state
     }

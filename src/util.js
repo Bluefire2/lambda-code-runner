@@ -49,7 +49,7 @@ export const arrayBufferToString = buf =>
  * @return The new board state, after executing the runMove.
  */
 export const processMove = (board, move, forward) => {
-    const {type, team, handle} = move;
+    const {command: type, team, handle} = move;
     switch (type) {
         case MOVE.TYPE.MOVE: {
             // move robot
