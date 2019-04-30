@@ -22,10 +22,11 @@ export const MOVE = {
 };
 
 export const TILE = {
-    BASE: "Base",
-    WALL: "Wall",
-    PATH: "Path",
-    GOLD: "Gold"
+    BASE: "B",
+    WALL: "W",
+    PATH: "P",
+    GOLD: "G",
+    WORM: "Worm"
 };
 
 
@@ -59,7 +60,8 @@ export const processMove = (board, move, forward) => {
                 robot = board.robots[handle];
 
             let [dx, dy] = directionToCoordinates(direction),
-                [x, y] = robot.xy;
+                [x, y] = robot.xy,
+                fromTile = board.map[x][y];
 
             // if the move is backwards, we invert the co-ordinate changes
             if (!forward) {
@@ -72,32 +74,42 @@ export const processMove = (board, move, forward) => {
                 robot.xy = [x + dx, y + dy];
             }
 
-            // check if moving to homebase
-            for (let i = 0; i < board.teamNames; i++) {
-                let currTeam = board.teamNames[i];
-                let [baseX, baseY] = board.bases[currTeam];
-                if (baseX === robot.xy[0] && baseY === robot.xy[1]) {
-                    //moving to base
-                    if (forward) {
-                        //add robot's gold to the base team
-                        board.teams[currTeam] += robot.gold;
-                        robot.lastDeposit.push(robot.gold);
-                        robot.gold = 0;
-                    }
+            let toTile = board.map[robot.xy[0]][robot.xy[1]];
+
+            if (forward) {
+                //forward stepping
+                if (toTile === TILE.WORM) {
+                    //moving towards wormhole
+                    //ASSUMPTION: wormhole only leads to paths
+                    robot.wormHistory.push(robot.xy); //add wormhole pos to history
+                    robot.xy = toTile.out;
                 }
-                
-                if (baseX === x && baseY === y) {
-                    //moving from base
-                    if (!forward) {
-                        //add gold back to robot
-                        let lastDepo = robot.lastDeposit.pop();
-                        if (lastDepo !== undefined) {
-                            board.teams[currTeam] -= lastDepo;
-                            robot.gold += lastDepo;
-                        } else {
-                            //should not happen
-                            console.log("stepping back with undefined last deposit");
-                        }
+                else if (toTile === TILE.BASE) {
+                    //moving towards homebase
+                    let team = toTile.team;
+                    //add robot's gold to the base team
+                    board.teams[team] += robot.gold;
+                    robot.lastDeposit.push(robot.gold);
+                    robot.gold = 0;
+                    robot.wormHistory.push([-1,-1]); //not from wormhole
+                } else {
+                    robot.wormHistory.push([-1,-1]); //not from wormhole
+                }
+            } else {
+                //back stepping
+                let lastIsWorm = robot.wormHistory.pop();
+                if (lastIsWorm[0] !== -1 && lastIsWorm[1] !== -1) {
+                    //back stepping for wormhole
+                    robot.xy = [lastIsWorm[0] + dx][lastIsWorm[-1]+dy];
+                } else if (fromTile === TILE.BASE) {
+                    //stepping back from base
+                    let lastDepo = robot.lastDeposit.pop();
+                    if (lastDepo !== undefined) {
+                        board.teams[fromTile.team] -= lastDepo;
+                        robot.gold += lastDepo;
+                    } else {
+                        //should not happen
+                        console.log("stepping back with undefined last deposit");
                     }
                 }
             }
