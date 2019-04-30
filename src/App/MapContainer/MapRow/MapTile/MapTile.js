@@ -33,9 +33,20 @@ export default ({tile, robots, x, y}) => {
         }
     }
 
+    let typeClass = "path";
+    if (type === TILE.GOLD) {
+        typeClass = "gold";
+    } else if (type === TILE.BASE) {
+        typeClass = "base";
+    } else if (type === TILE.WORM) {
+        typeClass = "worm";
+    } else if (type === TILE.WALL) {
+        typeClass = "wall"
+    }
+
 
     return (
-        <div style={style} className={`map-tile ${type.toLowerCase()}`}>
+        <div style={style} className={`map-tile ${typeClass}`}>
             {contents}
             {bot}
         </div>
