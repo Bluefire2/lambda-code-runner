@@ -4,8 +4,6 @@ import './App.css';
 import Header from './Header';
 import MapContainer from "./MapContainer";
 import MovesListContainer from "./MovesListContainer";
-import {loadFile} from "../actions";
-import {bindActionCreators} from "redux";
 
 class App extends Component {
     render() {
@@ -34,10 +32,4 @@ const mapStateToProps = ({board: {height}}) => {
     return {height};
 };
 
-const mapDispatchToProps = dispatch => {
-    return bindActionCreators({
-        loadFile
-    }, dispatch);
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);
