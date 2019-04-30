@@ -23,6 +23,14 @@ class EditorGrid extends Component {
         }
     }
 
+    inBounds(pos) {
+        if (pos[0] >= 0 && pos[0] < this.state.width && 
+            pos[1] >= 0 && pos[1] < this.state.height) {
+            return true;
+        }
+        return false;
+    }
+
     changeWidth = (w) => {
         let newCells = this.initCells(w, this.state.height);
         let newGrids = this.initGrids(w, this.state.height);
@@ -73,6 +81,8 @@ class EditorGrid extends Component {
     }
 
     generateTable(cells) {
+        console.log("generate table");
+        console.log(this.state.grid);
         let width = cells[0].length;
         let height = cells.length;
         let table = []
@@ -83,12 +93,12 @@ class EditorGrid extends Component {
                 let curry = y;
                 let cell = this.state.grid[curry][currx];
                 if (cell.type === TILE.PATH) {
-                    console.log('render');
-                    console.log(cell.cost);
+                    // console.log('render');
+                    // console.log(cell.cost);
                     row.push(
                         <td className={classNames('grid', 'path')}
                          key={currx + "|" + curry}>
-                        {cell.cost}
+                        {this.state.grid[curry][currx].cost}
                         </td>
                     );
                 } else if (cell.type === TILE.WALL) {
@@ -101,7 +111,7 @@ class EditorGrid extends Component {
                     row.push(
                         <td className={classNames('grid', 'gold')}
                          key={currx + "|" + curry}>
-                         {cell.amount}
+                         {this.state.grid[curry][currx].amount}
                         </td>
                     );
                 } else if (cell.type === TILE.WORM) {
@@ -139,7 +149,7 @@ class EditorGrid extends Component {
         } else if (field === 'amount') {
             newGrid[y][x] = {
                 type: TILE.GOLD,
-                cost: newValue
+                amount: newValue
             }
         } else if (field === 'x') {
             let outy = newGrid[y][x].out[1];
@@ -159,14 +169,13 @@ class EditorGrid extends Component {
             grid: newGrid
         });
 
-        this.forceUpdate();
         
     }
 
     generateEditItem = () => {
         const pos = this.state.editTile;
         let form = "";
-        if (pos !== null && pos !== undefined) {
+        if (pos !== null && pos !== undefined && this.inBounds(pos)) {
             const tile = this.state.grid[pos[1]][pos[0]];
             if (tile.type === TILE.PATH) {
                 form = 
@@ -180,21 +189,21 @@ class EditorGrid extends Component {
                         pos, 'cost',
                         Number(e.target.value))}
                     />
+                    <p>Unclick the grid once you're done editting.</p>
                     </div>
             } else if (tile.type === TILE.GOLD) {
-                let posy = pos[1];
-                let posx = pos[0];
                 form = 
                     <div className="edit-item">
                     <div className="edit-item-label">Amount: </div>
                     <input 
                     key={1}
                     type="number" 
-                    value={this.state.grid[posy][posx].amount}
+                    value={this.state.grid[pos[1]][pos[0]].amount}
                     onChange={(e)=>this.updateEditResult(
                         pos, 'amount',
                         Number(e.target.value))}
                     />
+                    <p>Unclick the grid once you're done editing.</p>
                     </div>
             } else if (tile.type === TILE.WORM) {
                 form = 
@@ -202,6 +211,7 @@ class EditorGrid extends Component {
                     <div className="edit-item-label">To Position X: </div>
                     <input 
                     type="number" 
+                    key={2}
                     value={this.state.grid[pos[1]][pos[0]].out[0]}
                     onChange={(e)=>this.updateEditResult(
                         pos, 'x',
@@ -209,10 +219,12 @@ class EditorGrid extends Component {
                     <div className="edit-item-label">Y: </div>
                     <input 
                     type="number" 
+                    key={3}
                     value={this.state.grid[pos[1]][pos[0]].out[1]}
                     onChange={(e)=>this.updateEditResult(
                         pos, 'y',
                         Number(e.target.value))} />
+                    <p>Unclick the grid once you're done editing.</p>
                     </div>
             }
         }
@@ -284,9 +296,10 @@ class EditorGrid extends Component {
                             out: [0,0]
                         }
                     } else if (this.state.selectedItem === "gold") {
+                        console.log("gold");
                         newGrids[y][x] = {
                             type: TILE.GOLD,
-                            amount: 10
+                            amount: 10,
                         }
                     } else if (this.state.selectedItem === "edit") {
                         //edit
@@ -376,6 +389,7 @@ class EditorGrid extends Component {
 
 
     render() {
+        console.log("render");
         return (
             <div id="editorContainer">
                 <div id="editorHeader">
