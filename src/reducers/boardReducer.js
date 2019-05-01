@@ -30,7 +30,6 @@ export default (state = initialState, action) => {
                 },
                 teamsWithScores = {};
             teams.forEach(team => teamsWithScores[team] = 0);
-            console.log(bases);
             return {
                 map: squaredMap,
                 maxGold,
@@ -52,7 +51,6 @@ export default (state = initialState, action) => {
         case SEQUENTIAL_MOVE_ACTION:
             const {next: nextOrPrevious} = action.payload,
                 {moves, nextMove} = state;
-            console.log(moves, nextMove);
             const moveToExecute = nextOrPrevious ? moves[nextMove] : moves[nextMove - 2],
                 newState = {
                     ...state,

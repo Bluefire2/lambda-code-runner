@@ -56,7 +56,6 @@ export const processMove = (board, move, forward) => {
             const {direction} = move,
                 robot = board.robots[handle];
 
-            console.log(robot);
             let [dx, dy] = directionToCoordinates(direction),
                 [x, y] = robot.xy,
                 fromTile = board.map[y][x];
