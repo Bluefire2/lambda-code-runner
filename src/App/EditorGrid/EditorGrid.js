@@ -20,7 +20,8 @@ class EditorGrid extends Component {
             max_gold: 10,
             max_bots: 4,
             vision: 2,
-            show: false
+            show: false,
+            end_goal: 100,
         }
     }
 
@@ -67,6 +68,10 @@ class EditorGrid extends Component {
             } else if (field === 'max_bots') {
                 this.setState({
                     max_bots: newValue
+                })
+            } else if (field === 'end_goal') {
+                this.setState({
+                    end_goal: newValue
                 })
             }
         }
@@ -415,6 +420,7 @@ class EditorGrid extends Component {
             height: this.state.height,
             max_gold: this.state.max_gold,
             max_bots: this.state.max_bots,
+            end_goal: this.state.end_goal,
             teams: ["Blue", "Red"],
             vision: 2,
             map: map,
@@ -477,6 +483,13 @@ class EditorGrid extends Component {
                             type="number" name="max_bots" 
                             value={this.state.max_bots}
                             onChange={(e) => this.changeParams('max_bots',Number(e.target.value))}></input>
+                        </div>
+                        <div className='input-item'>
+                            <div className="label">End Goal: </div>
+                            <input 
+                            type="number" name="end_goal" 
+                            value={this.state.max_bots}
+                            onChange={(e) => this.changeParams('end_goal',Number(e.target.value))}></input>
                         </div>
                     </div>
                     <TableDragSelect
