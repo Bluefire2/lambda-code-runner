@@ -35,21 +35,19 @@ class EditorGrid extends Component {
         if (newValue > 0) {
             if (field === 'width') {
                 let newCells = this.initCells(newValue, this.state.height);
-                let newGrids = this.initGrids(newValue, this.state.height);
                 this.setState({
                     width: newValue,
                     cells: newCells,
-                    grid: newGrids,
-                    lastgrid: newGrids
+                    grid: this.initGrids(newValue, this.state.height),
+                    lastgrid: this.initGrids(newValue, this.state.height)
                 });
             } else if (field === 'height') {
                 let newCells = this.initCells(this.state.width, newValue);
-                let newGrids = this.initGrids(this.state.width, newValue);
                 this.setState({
                     height: newValue,
                     cells: newCells,
-                    grid: newGrids,
-                    lastgrid: newGrids
+                    grid: this.initGrids(this.state.width, newValue),
+                    lastgrid: this.initGrids(this.state.width, newValue)
                 })
             } else if (field === 'vision') {
                 this.setState({
@@ -95,8 +93,6 @@ class EditorGrid extends Component {
     }
 
     generateTable(cells) {
-        console.log("generate table");
-        console.log(this.state.grid);
         let width = cells[0].length;
         let height = cells.length;
         let table = []
@@ -107,8 +103,6 @@ class EditorGrid extends Component {
                 let curry = y;
                 let cell = this.state.grid[curry][currx];
                 if (cell.type === TILE.PATH) {
-                    // console.log('render');
-                    // console.log(cell.cost);
                     row.push(
                         <td className={classNames('grid', 'path')}
                          key={currx + "|" + curry}>
@@ -244,11 +238,13 @@ class EditorGrid extends Component {
     }
 
     reset = () => {
-        var init_cells = this.initCells(this.state.width, this.state.height);
+        let init_cells = this.initCells(this.state.width, this.state.height);
+        let newLastGrid = this.state.grid.map(arr => arr.slice(0));
         this.setState({
             cells: init_cells, 
-            lastgrid: this.state.grid
+            lastgrid: newLastGrid
         })
+        console.log('reset');
     }
 
     changeSelectedItem = (type) => {
@@ -292,9 +288,9 @@ class EditorGrid extends Component {
         return newCells;
     }
 
+
     updateGrid = (cells) => {
         var newGrids = this.state.grid;
-
         if (this.state.selectedItem === 'edit') {
             cells = this.getDifference(cells, this.state.cells);
         }
@@ -309,8 +305,9 @@ class EditorGrid extends Component {
                         }
                     } else if (this.state.selectedItem === "wall") {
                         newGrids[y][x] = {
-                            type: TILE.WALL,
+                            type: TILE.WALL
                         }
+                        console.log(x, y, 'click wall');
                     } else if (this.state.selectedItem === "base-red") {
                         newGrids[y][x] = {
                             type: TILE.BASE,
@@ -330,7 +327,7 @@ class EditorGrid extends Component {
                         console.log("gold");
                         newGrids[y][x] = {
                             type: TILE.GOLD,
-                            amount: 10,
+                            amount: 10
                         }
                     } else if (this.state.selectedItem === "edit") {
                         //edit
@@ -386,26 +383,26 @@ class EditorGrid extends Component {
 
     export = () => {
         let map = [];
-        let redBaseFlag = false;
-        let blueBaseFlag = true;
+        let redBaseFlag = 0;
+        let blueBaseFlag = 0;
         for (var x = 0; x < this.state.width; x++) {
             for (var y = (this.state.height-1); y >= 0; y--) {
                 let tile = this.state.grid[y][x]
                 map.push(this.tileToJson(tile));
                 if (tile.type === TILE.BASE) {
                     if (tile.team === 'Red') {
-                        redBaseFlag = true;
+                        redBaseFlag ++;
                     } else if (tile.team === 'Blue') {
-                        blueBaseFlag = true;
+                        blueBaseFlag ++;
                     }
                 }
                 
             }
         }
 
-        if (!redBaseFlag || !blueBaseFlag) {
+        if (redBaseFlag !== 1 || !blueBaseFlag !== 1) {
             //missing bases
-            alert('Missing Home Base');
+            alert('Each time must have exactly one homebase.');
             return;
         }
 
@@ -435,7 +432,6 @@ class EditorGrid extends Component {
 
 
     render() {
-        console.log("render");
         return (
             <div id="editorContainer">
                 <div id="editorHeader">
@@ -484,10 +480,14 @@ class EditorGrid extends Component {
                 <br/>
                 <div id="toolBox">
                     <div className="label">Tools: </div>
-                    {this.generateToolBox()}</div>
-                <div id="editorBox">
+                    {this.generateToolBox()}
+                </div>
+                <br />
+                <div id="editorBox" className={this.state.editTile === null ? 'disabled' : 'not-disabled'}>
                     <div className="label">Edit: </div>
-                    {this.generateEditItem()}</div>
+                    {this.generateEditItem()}
+                </div>
+                <br />
                 <div id="export">
                 <button onClick={(e) => this.export()}>Export</button>
                 </div>
