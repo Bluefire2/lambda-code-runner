@@ -72,6 +72,7 @@ export const processMove = (board, move, forward) => {
             }
 
             let toTile = board.map[robot.xy[1]][robot.xy[0]];
+            
 
             if (forward) {
                 //forward stepping
@@ -144,7 +145,8 @@ export const processMove = (board, move, forward) => {
                     team,
                     xy: board.bases[team], // spawn at the home base location
                     gold: 0,
-                    lastDeposit: []
+                    lastDeposit: [],
+                    wormHistory: []
                 };
             } else {
                 // delete existing robot
@@ -164,17 +166,17 @@ const directionToCoordinates = direction => {
     // [dx, dy]
     switch (direction) {
         case MOVE.DIRECTION.N:
-            return [0, 1];
-        case MOVE.DIRECTION.NE:
-            return [1, 1];
-        case MOVE.DIRECTION.NW:
-            return [-1, 1];
-        case MOVE.DIRECTION.S:
             return [0, -1];
-        case MOVE.DIRECTION.SE:
+        case MOVE.DIRECTION.NE:
             return [1, -1];
-        case MOVE.DIRECTION.SW:
+        case MOVE.DIRECTION.NW:
             return [-1, -1];
+        case MOVE.DIRECTION.S:
+            return [0, 1];
+        case MOVE.DIRECTION.SE:
+            return [1, 1];
+        case MOVE.DIRECTION.SW:
+            return [-1, 1];
         case MOVE.DIRECTION.E:
             return [1, 0];
         case MOVE.DIRECTION.W:

@@ -25,8 +25,8 @@ export default (state = initialState, action) => {
                 bases = getBases(squaredMap),
                 // for testing: delete after processMove is done.
                 testBots = {
-                    0: {team: "Red", xy: bases["Red"], gold: 0, lastDeposit: []},
-                    1: {team: "Blue", xy: bases["Blue"], gold: 0, lastDeposit: []},
+                    0: {team: "Red", xy: bases["Red"], gold: 0, lastDeposit: [], wormHistory: []},
+                    1: {team: "Blue", xy: bases["Blue"], gold: 0, lastDeposit: [], wormHistory: []},
                 },
                 teamsWithScores = {};
             teams.forEach(team => teamsWithScores[team] = 0);
