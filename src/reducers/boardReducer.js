@@ -1,5 +1,6 @@
 import {fulfilled, processMove, TILE} from "../util";
-import {LOAD_FILE_ACTION, MOVE_ACTION} from "../actions";
+import {LOAD_FILE_ACTION, MOVE_ACTION, runMove, SEQUENTIAL_MOVE_ACTION} from "../actions";
+import {Cmd, loop} from "redux-loop";
 
 // TODO: document board object schema
 
@@ -17,9 +18,9 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case fulfilled(LOAD_FILE_ACTION):
+        case fulfilled(LOAD_FILE_ACTION): {
             // load new map
-            const {map, width, height, teams, max_gold: maxGold, max_bots: maxBots} = action.payload,
+            const {map, width, height, teams, max_gold: maxGold, max_bots: maxBots, moves} = action.payload,
                 squaredMap = squarify(map, height, width),
                 bases = getBases(squaredMap),
                 // for testing: delete after processMove is done.
@@ -39,12 +40,27 @@ export default (state = initialState, action) => {
                 teams: teamsWithScores,
                 teamNames: teams,
                 bases,
-                robots: testBots // no robots at the start
+                robots: testBots, // no robots at the start
+                moves,
+                nextMove: 0
             };
+        }
         case MOVE_ACTION:
             // make a move!
             const {forward, move} = action.payload;
             return processMove(state, move, forward);
+        case SEQUENTIAL_MOVE_ACTION:
+            const {next: nextOrPrevious} = action.payload,
+                {moves, nextMove} = state;
+            console.log(moves, nextMove);
+            const moveToExecute = nextOrPrevious ? moves[nextMove] : moves[nextMove - 2],
+                newState = {
+                    ...state,
+                    moves: state.moves,
+                    nextMove: nextOrPrevious ? nextMove + 1 : nextMove - 1 // mfw
+                };
+            processMove(state, moveToExecute, nextOrPrevious);
+            return newState;
         default:
             return state
     }

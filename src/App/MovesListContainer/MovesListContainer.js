@@ -45,9 +45,9 @@ class MovesListContainer extends Component {
     }
 }
 
-const mapStateToProps = ({history: {moves, next}}) => {
+const mapStateToProps = ({board: {moves, nextMove}}) => {
     return {
-        moves, next
+        moves, nextMove
     };
 };
 

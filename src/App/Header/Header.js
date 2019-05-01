@@ -52,10 +52,9 @@ class Header extends Component {
     }
 }
 
-const mapStateToProps = ({board: {teamNames, maxGold, maxBots, teams, robots},
-                          history: {moves, next}}) => {
+const mapStateToProps = ({board: {teamNames, maxGold, maxBots, teams, robots, moves, nextMove}}) => {
     return {
-        teamNames, teams, robots, maxGold, maxBots, moves, next
+        teamNames, teams, robots, maxGold, maxBots, moves, nextMove
     };
 };
 
