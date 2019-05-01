@@ -79,7 +79,7 @@ const getBases = map => {
         for (let j = 0; j < row.length; j++) {
             const elem = row[j];
             if (elem.type === TILE.BASE) {
-                bases[elem.team] = adjustXY(width, height, [j, i]);
+                bases[elem.team] = [j,i];
             }
         }
     }
