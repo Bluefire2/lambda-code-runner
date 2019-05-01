@@ -338,7 +338,7 @@ class EditorGrid extends Component {
                     } else if (this.state.selectedItem === "gold") {
                         newGrids[y][x] = {
                             type: TILE.GOLD,
-                            amount: 10
+                            amount: 9
                         }
                     } else if (this.state.selectedItem === "edit") {
                         //edit
