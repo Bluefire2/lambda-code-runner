@@ -20,7 +20,14 @@ class EditorGrid extends Component {
             max_gold: 10,
             max_bots: 4,
             vision: 2,
+            show: false
         }
+    }
+
+    showEditor = () => {
+        this.setState({
+            show: !this.state.show
+        })
     }
 
     inBounds(pos) {
@@ -432,63 +439,71 @@ class EditorGrid extends Component {
     render() {
         return (
             <div id="editorContainer">
-                <div id="editorHeader">
-                    <div className='input-item'>
-                        <div className="label">Width: </div>
-                        <input 
-                        type="number" name="width" 
-                        value={this.state.width} 
-                        onChange={(e) => this.changeParams('width',Number(e.target.value))}></input>
+                <div 
+                id="editContainerContent" 
+                className={this.state.show ? 'editorContent' : 'disabled'}>
+                    <div id="editorHeader">
+                        <div className='input-item'>
+                            <div className="label">Width: </div>
+                            <input 
+                            type="number" name="width" 
+                            value={this.state.width} 
+                            onChange={(e) => this.changeParams('width',Number(e.target.value))}></input>
+                        </div>
+                        <div className='input-item'>
+                            <div className="label">Height: </div>
+                            <input 
+                            type="number" name="height" 
+                            value={this.state.height}
+                            onChange={(e) => this.changeParams('height',Number(e.target.value))}></input>
+                        </div>
+                        <div className='input-item'>
+                            <div className="label">Vision: </div>
+                            <input 
+                            type="number" name="vision" 
+                            value={this.state.vision}
+                            onChange={(e) => this.changeParams('vision',Number(e.target.value))}></input>
+                        </div>
+                        <div className='input-item'>
+                            <div className="label">Gold Cap: </div>
+                            <input 
+                            type="number" name="max_gold" 
+                            value={this.state.max_gold}
+                            onChange={(e) => this.changeParams('max_gold',Number(e.target.value))}></input>
+                        </div>
+                        <div className='input-item'>
+                            <div className="label">Bot Cap: </div>
+                            <input 
+                            type="number" name="max_bots" 
+                            value={this.state.max_bots}
+                            onChange={(e) => this.changeParams('max_bots',Number(e.target.value))}></input>
+                        </div>
                     </div>
-                    <div className='input-item'>
-                        <div className="label">Height: </div>
-                        <input 
-                        type="number" name="height" 
-                        value={this.state.height}
-                        onChange={(e) => this.changeParams('height',Number(e.target.value))}></input>
+                    <TableDragSelect
+                    value={this.state.cells}
+                    onChange={cells => this.updateGrid(cells)}
+                    >
+                    {this.generateTable(this.state.cells)}
+                    </TableDragSelect>
+                    <br/>
+                    <div id="toolBox">
+                        <div className="label">Tools: </div>
+                        {this.generateToolBox()}
                     </div>
-                    <div className='input-item'>
-                        <div className="label">Vision: </div>
-                        <input 
-                        type="number" name="vision" 
-                        value={this.state.vision}
-                        onChange={(e) => this.changeParams('vision',Number(e.target.value))}></input>
+                    <br />
+                    <div id="editorBox" className={this.state.editTile === null ? 'disabled' : 'not-disabled'}>
+                        <div className="label">Edit: </div>
+                        {this.generateEditItem()}
                     </div>
-                    <div className='input-item'>
-                        <div className="label">Gold Cap: </div>
-                        <input 
-                        type="number" name="max_gold" 
-                        value={this.state.max_gold}
-                        onChange={(e) => this.changeParams('max_gold',Number(e.target.value))}></input>
-                    </div>
-                    <div className='input-item'>
-                        <div className="label">Bot Cap: </div>
-                        <input 
-                        type="number" name="max_bots" 
-                        value={this.state.max_bots}
-                        onChange={(e) => this.changeParams('max_bots',Number(e.target.value))}></input>
+                    <br />
+                    <div id="export">
+                    <button onClick={(e) => this.export()}>Export</button>
                     </div>
                 </div>
-                <TableDragSelect
-                value={this.state.cells}
-                onChange={cells => this.updateGrid(cells)}
-                >
-                {this.generateTable(this.state.cells)}
-                </TableDragSelect>
                 <br/>
-                <div id="toolBox">
-                    <div className="label">Tools: </div>
-                    {this.generateToolBox()}
-                </div>
-                <br />
-                <div id="editorBox" className={this.state.editTile === null ? 'disabled' : 'not-disabled'}>
-                    <div className="label">Edit: </div>
-                    {this.generateEditItem()}
-                </div>
-                <br />
-                <div id="export">
-                <button onClick={(e) => this.export()}>Export</button>
-                </div>
+                <button onClick={(e) => this.showEditor()}>
+                {this.state.show ? 'Hide Editor' : 'Show Editor'}
+                </button>
             </div>
         );
     }
