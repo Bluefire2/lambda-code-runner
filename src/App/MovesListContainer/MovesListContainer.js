@@ -7,13 +7,8 @@ import "./style.css";
 
 
 class MovesListContainer extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const {moves, nextMove} = this.props;
-        console.log(moves);
         if (moves == null) { // double equals is intentional here, please don't change this
             return (
                 <div id="moves-container">
