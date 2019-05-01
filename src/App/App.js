@@ -4,6 +4,8 @@ import './App.css';
 import Header from './Header';
 import MapContainer from "./MapContainer";
 import MovesListContainer from "./MovesListContainer";
+import {bindActionCreators} from "redux";
+import {runSequentialMove} from "../actions";
 
 class App extends Component {
     render() {
@@ -23,6 +25,9 @@ class App extends Component {
                         <MovesListContainer/>
                     </div>
                 </div>
+                {/*For testing*/}
+                <button onClick={() => this.props.runSequentialMove(false)}>Previous Move</button>
+                <button onClick={() => this.props.runSequentialMove(true)}>Next Move</button>
             </div>
         );
     }
@@ -32,4 +37,12 @@ const mapStateToProps = ({board: {height}}) => {
     return {height};
 };
 
-export default connect(mapStateToProps)(App);
+// for testing
+// TODO: remove this when done
+const mapDispatchToProps = dispatch => {
+    return bindActionCreators({
+        runSequentialMove
+    }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
