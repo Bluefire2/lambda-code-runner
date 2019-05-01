@@ -396,9 +396,9 @@ class EditorGrid extends Component {
             }
         }
 
-        if (redBaseFlag !== 1 || !blueBaseFlag !== 1) {
+        if (redBaseFlag !== 1 || blueBaseFlag !== 1) {
             //missing bases
-            alert('Each time must have exactly one homebase.');
+            alert('Each team must have exactly one homebase.');
             return;
         }
 
