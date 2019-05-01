@@ -66,10 +66,10 @@ class EditorGrid extends Component {
     }
 
     initCells(w, h) {
-        var cells = [];
-        for (var y = 0; y < h; y++) {
-            var row = []
-            for (var x = 0; x < w; x++) {
+        let cells = [];
+        for (let y = 0; y < h; y++) {
+            let row = []
+            for (let x = 0; x < w; x++) {
                 row.push(false);
             }
             cells.push(row);
@@ -78,10 +78,10 @@ class EditorGrid extends Component {
     }
 
     initGrids(w, h) {
-        var cells = [];
-        for (var y = 0; y < h; y++) {
-            var row = []
-            for (var x = 0; x < w; x++) {
+        let cells = [];
+        for (let y = 0; y < h; y++) {
+            let row = []
+            for (let x = 0; x < w; x++) {
                 row.push({
                     type: TILE.PATH,
                     cost: 10
@@ -96,9 +96,9 @@ class EditorGrid extends Component {
         let width = cells[0].length;
         let height = cells.length;
         let table = []
-        for (var y = 0; y < height; y++) {
+        for (let y = 0; y < height; y++) {
             let row = []
-            for (var x = 0; x < width; x++) {
+            for (let x = 0; x < width; x++) {
                 let currx = x;
                 let curry = y;
                 let cell = this.state.grid[curry][currx];
@@ -244,7 +244,6 @@ class EditorGrid extends Component {
             cells: init_cells, 
             lastgrid: newLastGrid
         })
-        console.log('reset');
     }
 
     changeSelectedItem = (type) => {
@@ -258,7 +257,7 @@ class EditorGrid extends Component {
     generateToolBox = () => {
         let lst = [];
         let items = ["path", "wall", "base-red", "base-blue", "worm", "gold", "edit", "done"];
-        for (var i = 0; i < items.length; i++) {
+        for (let i = 0; i < items.length; i++) {
             let type = items[i];
             lst.push(
                 <div 
@@ -276,27 +275,26 @@ class EditorGrid extends Component {
 
     getDifference = (cells1, cells2) => {
         let newCells = this.initCells(this.state.width, this.state.height);
-        for (var y = 0; y < this.state.height; y++) {
-            for (var x = 0; x < this.state.width; x++) {
+        for (let y = 0; y < this.state.height; y++) {
+            for (let x = 0; x < this.state.width; x++) {
                 if (cells1[y][x] !== cells2[y][x]) {
                     newCells[y][x] = true;
                     break;
                 }
             }
         }
-        console.log(newCells);
         return newCells;
     }
 
 
     updateGrid = (cells) => {
-        var newGrids = this.state.grid;
+        let newGrids = this.state.grid;
         if (this.state.selectedItem === 'edit') {
             cells = this.getDifference(cells, this.state.cells);
         }
 
-        for (var y = 0; y < cells.length; y++) {
-            for (var x = 0; x < cells[y].length; x++) {
+        for (let y = 0; y < cells.length; y++) {
+            for (let x = 0; x < cells[y].length; x++) {
                 if (cells[y][x] === true) {
                     if (this.state.selectedItem === "path") {
                         newGrids[y][x] = {
@@ -307,7 +305,6 @@ class EditorGrid extends Component {
                         newGrids[y][x] = {
                             type: TILE.WALL
                         }
-                        console.log(x, y, 'click wall');
                     } else if (this.state.selectedItem === "base-red") {
                         newGrids[y][x] = {
                             type: TILE.BASE,
@@ -324,7 +321,6 @@ class EditorGrid extends Component {
                             out: [0,0]
                         }
                     } else if (this.state.selectedItem === "gold") {
-                        console.log("gold");
                         newGrids[y][x] = {
                             type: TILE.GOLD,
                             amount: 10
@@ -385,8 +381,8 @@ class EditorGrid extends Component {
         let map = [];
         let redBaseFlag = 0;
         let blueBaseFlag = 0;
-        for (var x = 0; x < this.state.width; x++) {
-            for (var y = (this.state.height-1); y >= 0; y--) {
+        for (let x = 0; x < this.state.width; x++) {
+            for (let y = (this.state.height-1); y >= 0; y--) {
                 let tile = this.state.grid[y][x]
                 map.push(this.tileToJson(tile));
                 if (tile.type === TILE.BASE) {
@@ -416,9 +412,9 @@ class EditorGrid extends Component {
             map: map
         }
 
-        var text = JSON.stringify(obj);
-        var filename = "map.json";
-        var element = document.createElement('a');
+        let text = JSON.stringify(obj);
+        let filename = "map.json";
+        let element = document.createElement('a');
         element.setAttribute('href', 'data:application/octet-stream;charset=utf-8,' + encodeURIComponent(text));
         element.setAttribute('download', filename);
 
