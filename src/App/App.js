@@ -27,6 +27,7 @@ class App extends Component {
                     </div>
                     <br/>
                 </div>
+                <br/>
                 <EditorGrid/>
             </div>
         );
