@@ -488,7 +488,7 @@ class EditorGrid extends Component {
                             <div className="label">End Goal: </div>
                             <input 
                             type="number" name="end_goal" 
-                            value={this.state.max_bots}
+                            value={this.state.end_goal}
                             onChange={(e) => this.changeParams('end_goal',Number(e.target.value))}></input>
                         </div>
                     </div>
