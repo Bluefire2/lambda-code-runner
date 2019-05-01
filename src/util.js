@@ -1,3 +1,5 @@
+import produce from 'immer';
+
 export const DIRECTION = {
     FORWARD: "FORWARD",
     BACKWARD: "BACKWARD"
@@ -33,6 +35,9 @@ export const pending = name => name + "_PENDING";
 export const fulfilled = name => name + "_FULFILLED";
 export const rejected = name => name + "_REJECTED";
 
+
+const isBetween = (lower, upper, x) => lower <= x && x <= upper;
+
 // AAAAAAAAAAAAAAAAAAAAAAAAAAAA
 export const arrayBufferToString = buf =>
     String.fromCharCode.apply(null, new Uint16Array(buf));
@@ -40,127 +45,124 @@ export const arrayBufferToString = buf =>
 /**
  * Execute a runMove in a given direction (forwards or backwards), generating the new board state.
  *
- * TODO: do we need to avoid mutating the board?
- *
  * @param board The board state.
  * @param move The runMove to execute.
  * @param forward Whether the runMove should be done forwards or backwards (undo).
  *
- * @return The new board state, after executing the runMove.
+ * @return {*} The new board state, after executing the runMove.
  */
 export const processMove = (board, move, forward) => {
-    const {command: type, team, handle} = move;
-    switch (type) {
-        case MOVE.TYPE.MOVE: {
-            // move robot
-            const {direction} = move,
-                robot = board.robots[handle];
+    return produce(board, newBoard => {
+        const {command: type, team, handle} = move;
+        switch (type) {
+            case MOVE.TYPE.MOVE: {
+                // move robot
 
-            let [dx, dy] = directionToCoordinates(direction),
-                [x, y] = robot.xy,
-                fromTile = board.map[y][x];
+                const {direction} = move,
+                    robot = newBoard.robots.find(bot => bot.handle === handle);
 
-            // if the move is backwards, we invert the co-ordinate changes
-            if (!forward) {
-                [dx, dy] = [-dx, -dy];
-            }
+                let [dx, dy] = directionToCoordinates(direction),
+                    [x, y] = robot.xy,
+                    fromTile = newBoard.map[y][x];
 
-            // update co-ordinates, checking bounds
-            if (isBetween(0, board.width - 1, x + dx)
-                && isBetween(0, board.height, y + dy)) {
-                robot.xy = [x + dx, y + dy];
-            }
-
-            let toTile = board.map[robot.xy[1]][robot.xy[0]];
-            
-
-            if (forward) {
-                //forward stepping
-                if (toTile === TILE.WORM) {
-                    //moving towards wormhole
-                    //ASSUMPTION: wormhole only leads to paths
-                    robot.wormHistory.push(robot.xy); //add wormhole pos to history
-                    robot.xy = toTile.out;
+                // if the move is backwards, we invert the co-ordinate changes
+                if (!forward) {
+                    [dx, dy] = [-dx, -dy];
                 }
-                else if (toTile === TILE.BASE) {
-                    //moving towards homebase
-                    let team = toTile.team;
-                    //add robot's gold to the base team
-                    board.teams[team] += robot.gold;
-                    robot.lastDeposit.push(robot.gold);
-                    robot.gold = 0;
-                    robot.wormHistory.push([-1,-1]); //not from wormhole
-                } else {
-                    robot.wormHistory.push([-1,-1]); //not from wormhole
-                }
-            } else {
-                //back stepping
-                let lastIsWorm = robot.wormHistory.pop();
-                if (lastIsWorm[0] !== -1 && lastIsWorm[1] !== -1) {
-                    //back stepping for wormhole
-                    robot.xy = [lastIsWorm[0] + dx][lastIsWorm[-1]+dy];
-                } else if (fromTile === TILE.BASE) {
-                    //stepping back from base
-                    let lastDepo = robot.lastDeposit.pop();
-                    if (lastDepo !== undefined) {
-                        board.teams[fromTile.team] -= lastDepo;
-                        robot.gold += lastDepo;
-                    } else {
-                        //should not happen
-                        console.log("stepping back with undefined last deposit");
-                    }
-                }
-            }
 
-            break;
-        }
-        case MOVE.TYPE.TAKE: {
-            // take/return gold
-            const {direction, amount} = move,
-                robot = board.robots[handle],
-                [x, y] = robot.xy,
-                [dx, dy] = directionToCoordinates(direction),
-                tile = board.map[y + dy][x + dx];
+                // update co-ordinates, checking bounds
+                if (isBetween(0, newBoard.width - 1, x + dx)
+                    && isBetween(0, newBoard.height, y + dy)) {
+                    robot.xy = [x + dx, y + dy];
+                }
 
-            if (tile.type === TILE.GOLD) {
+                let toTile = newBoard.map[robot.xy[1]][robot.xy[0]];
+
                 if (forward) {
-                    // take some gold from the pile, if there's any left
-                    if (amount > 0) {
-                        // move gold from pile into the team's score counter
-                        tile.amount -= amount;
-                        robot.gold += amount;
+                    //forward stepping
+                    if (toTile === TILE.WORM) {
+                        //moving towards wormhole
+                        //ASSUMPTION: wormhole only leads to paths
+                        robot.wormHistory.push(robot.xy); //add wormhole pos to history
+                        robot.xy = toTile.out;
+                    } else if (toTile === TILE.BASE) {
+                        //moving towards homebase
+                        let team = toTile.team;
+                        //add robot's gold to the base team
+                        newBoard.teams[team] += robot.gold;
+                        robot.lastDeposit.push(robot.gold);
+                        robot.gold = 0;
+                        robot.wormHistory.push([-1, -1]); //not from wormhole
+                    } else {
+                        robot.wormHistory.push([-1, -1]); //not from wormhole
                     }
                 } else {
-                    // return gold to pile
-                    tile.amount += amount;
-                    robot.gold -= amount;
+                    //back stepping
+                    let lastIsWorm = robot.wormHistory.pop();
+                    if (lastIsWorm[0] !== -1 && lastIsWorm[1] !== -1) {
+                        //back stepping for wormhole
+                        robot.xy = [lastIsWorm[0] + dx][lastIsWorm[-1] + dy];
+                    } else if (fromTile === TILE.BASE) {
+                        //stepping back from base
+                        let lastDepo = robot.lastDeposit.pop();
+                        if (lastDepo !== undefined) {
+                            newBoard.teams[fromTile.team] -= lastDepo;
+                            robot.gold += lastDepo;
+                        } else {
+                            //should not happen
+                            console.log("stepping back with undefined last deposit");
+                        }
+                    }
                 }
-            }
-            break;
-        }
-        case MOVE.TYPE.SPAWN: {
-            if (forward) {
-                // spawn new robot
-                board.robots[handle] = {
-                    team,
-                    xy: board.bases[team], // spawn at the home base location
-                    gold: 0,
-                    lastDeposit: [],
-                    wormHistory: []
-                };
-            } else {
-                // delete existing robot
-                delete board.robots[handle];
-            }
-            break;
-        }
-        default:
-            // aaaaaaaaa
-    }
-    return board;
-};
 
-const isBetween = (lower, upper, x) => lower <= x && x <= upper;
+                break;
+            }
+            case MOVE.TYPE.TAKE: {
+                // take/return gold
+                const {direction, amount} = move,
+                    robot = board.robots[handle],
+                    [x, y] = robot.xy,
+                    [dx, dy] = directionToCoordinates(direction),
+                    tile = board.map[y + dy][x + dx];
+
+                if (tile.type === TILE.GOLD) {
+                    if (forward) {
+                        // take some gold from the pile, if there's any left
+                        if (amount > 0) {
+                            // move gold from pile into the team's score counter
+                            tile.amount -= amount;
+                            robot.gold += amount;
+                        }
+                    } else {
+                        // return gold to pile
+                        tile.amount += amount;
+                        robot.gold -= amount;
+                    }
+                }
+                break;
+            }
+            case MOVE.TYPE.SPAWN: {
+                if (forward) {
+                    // spawn new robot
+                    newBoard.robots = [...newBoard.robots, {
+                        handle,
+                        team,
+                        xy: newBoard.bases[team], // spawn at the home base location
+                        gold: 0,
+                        lastDeposit: [],
+                        wormHistory: []
+                    }]
+                } else {
+                    // delete existing robot
+                    newBoard.robots = newBoard.robots.filter(robot => robot.handle !== handle);
+                }
+                break;
+            }
+            default:
+            // aaaaaaaaa
+        }
+    });
+};
 
 const directionToCoordinates = direction => {
     // [dx, dy]
@@ -193,3 +195,7 @@ const directionToCoordinates = direction => {
  * @return {string} The string representation.
  */
 export const moveToString = move => JSON.stringify(move); // TODO: implement this
+
+export const adjustXY = (width, height) => {
+    return ([x, y]) => [];
+};

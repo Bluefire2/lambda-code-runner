@@ -23,10 +23,10 @@ export default (state = initialState, action) => {
                 squaredMap = squarify(map, height, width),
                 bases = getBases(squaredMap),
                 // for testing: delete after processMove is done.
-                testBots = {
-                    0: {team: "Red", xy: bases["Red"], gold: 0, lastDeposit: [], wormHistory: []},
-                    1: {team: "Blue", xy: bases["Blue"], gold: 0, lastDeposit: [], wormHistory: []},
-                },
+                testBots = [
+                    {handle: 0, team: "Red", xy: bases["Red"], gold: 0, lastDeposit: [], wormHistory: []},
+                    {handle: 1, team: "Blue", xy: bases["Blue"], gold: 0, lastDeposit: [], wormHistory: []},
+                ],
                 teamsWithScores = {};
             teams.forEach(team => teamsWithScores[team] = 0);
             return {
@@ -56,12 +56,13 @@ export default (state = initialState, action) => {
                     moves: state.moves,
                     nextMove: nextOrPrevious ? nextMove + 1 : nextMove - 1 // mfw
                 };
-            processMove(state, moveToExecute, nextOrPrevious);
-            return newState;
+            return processMove(newState, moveToExecute, nextOrPrevious);
         default:
             return state
     }
 }
+
+const adjustXY = (width, height, [x, y]) => [height - x - 1, width - y - 1];
 
 /**
  * Get all the team home base locations from a map.
@@ -70,13 +71,15 @@ export default (state = initialState, action) => {
  * @return An object mapping team names to home base locations.
  */
 const getBases = map => {
-    const bases = {};
+    const bases = {},
+        width = map.length,
+        height = map[0].length;
     for (let i = 0; i < map.length; i++) {
         const row = map[i];
         for (let j = 0; j < row.length; j++) {
             const elem = row[j];
             if (elem.type === TILE.BASE) {
-                bases[elem.team] = [j, i];
+                bases[elem.team] = adjustXY(width, height, [j, i]);
             }
         }
     }
