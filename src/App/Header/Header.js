@@ -5,9 +5,7 @@ import FieldFileInput from "../../FieldFileInput";
 import {loadFile} from "../../actions";
 import {bindActionCreators} from "redux";
 
-
 import "./style.css";
-
 
 class Header extends Component {
     render() {
@@ -18,19 +16,21 @@ class Header extends Component {
             moves: all moves
             next: next index of move
         */
-        const {teamNames, teams, bots, maxGold, maxBots, moves, next} = this.props;
-
+        const {teamNames, teams, maxGold, moves, next} = this.props;
+        const input = <FieldFileInput className="header-item"
+                                      label={"Import"}
+                                      types={".json"}
+                                      onChange={this.props.loadFile}/>;
         if (teamNames === void 0) {
             return (
                 <div id="header-container">
-                    <FieldFileInput className="header-item" label={"Import"} types={".json"} onChange={this.props.loadFile} />
+                    {input}
                 </div>
             );
         }
-        // TODO: is it OK to use the index as the key here?
         return (
             <div id="header-container">
-                <FieldFileInput className="header-item" label={"Import"} types={".json"} onChange={this.props.loadFile} />
+                {input}
                 <div className="header-item" id="Score">
                     <div className="section-head" key={-1}>Scores</div>
 
@@ -44,7 +44,7 @@ class Header extends Component {
                 {/* <div className="header-item" id="NumBots">{numBots}</div> */}
                 <div className="header-item" id="MovesLeft">
                     <div className="section-head" key={"gold"}>Gold Cap: {maxGold}</div>
-                    <div className="section-head" key={"move-head"}>Moves Left: </div>
+                    <div className="section-head" key={"move-head"}>Moves Left:</div>
                     <div id="MovesCounter" key="move">{next} / {moves.length}</div>
                 </div>
             </div>

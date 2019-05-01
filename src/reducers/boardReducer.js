@@ -1,6 +1,5 @@
 import {fulfilled, processMove, TILE} from "../util";
-import {LOAD_FILE_ACTION, MOVE_ACTION, runMove, SEQUENTIAL_MOVE_ACTION} from "../actions";
-import {Cmd, loop} from "redux-loop";
+import {LOAD_FILE_ACTION, MOVE_ACTION, SEQUENTIAL_MOVE_ACTION} from "../actions";
 
 // TODO: document board object schema
 
