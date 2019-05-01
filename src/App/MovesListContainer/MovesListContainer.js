@@ -12,7 +12,7 @@ class MovesListContainer extends Component {
     }
 
     render() {
-        const {moves, next} = this.props;
+        const {moves, nextMove} = this.props;
         console.log(moves);
         if (moves == null) { // double equals is intentional here, please don't change this
             return (
@@ -25,11 +25,11 @@ class MovesListContainer extends Component {
         const movesList = moves.map((move, index) => {
             const classes = classNames({
                 "move-element": true,
-                "past-move": index < next,
-                "next-move": index === next
+                "past-move": index < nextMove,
+                "next-move": index === nextMove
             });
 
-            if (index < next) {
+            if (index < nextMove) {
                 // don't render past moves :(
                 return null;
             } else {
