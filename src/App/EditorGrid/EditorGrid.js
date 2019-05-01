@@ -31,26 +31,40 @@ class EditorGrid extends Component {
         return false;
     }
 
-    changeWidth = (w) => {
-        let newCells = this.initCells(w, this.state.height);
-        let newGrids = this.initGrids(w, this.state.height);
-        this.setState({
-            width: w,
-            cells: newCells,
-            grid: newGrids,
-            lastgrid: newGrids
-        });
-    }
-
-    changeHeight = (h) => {
-        let newCells = this.initCells(this.state.width, h);
-        let newGrids = this.initGrids(this.state.width, h);
-        this.setState({
-            height: h,
-            cells: newCells,
-            grid: newGrids,
-            lastgrid: newGrids
-        })
+    changeParams = (field, newValue) => {
+        if (newValue > 0) {
+            if (field === 'width') {
+                let newCells = this.initCells(newValue, this.state.height);
+                let newGrids = this.initGrids(newValue, this.state.height);
+                this.setState({
+                    width: newValue,
+                    cells: newCells,
+                    grid: newGrids,
+                    lastgrid: newGrids
+                });
+            } else if (field === 'height') {
+                let newCells = this.initCells(this.state.width, newValue);
+                let newGrids = this.initGrids(this.state.width, newValue);
+                this.setState({
+                    height: newValue,
+                    cells: newCells,
+                    grid: newGrids,
+                    lastgrid: newGrids
+                })
+            } else if (field === 'vision') {
+                this.setState({
+                    vision: newValue
+                })
+            } else if (field === 'max_gold') {
+                this.setState({
+                    max_gold: newValue
+                })
+            } else if (field === 'max_bots') {
+                this.setState({
+                    max_bots: newValue
+                })
+            }
+        }
     }
 
     initCells(w, h) {
@@ -141,7 +155,6 @@ class EditorGrid extends Component {
         let x = pos[0];
         let y = pos[1];
         if (field === 'cost') {
-            console.log('change cost');
             newGrid[y][x] = {
                 type: TILE.PATH,
                 cost: newValue
@@ -189,7 +202,6 @@ class EditorGrid extends Component {
                         pos, 'cost',
                         Number(e.target.value))}
                     />
-                    <p>Unclick the grid once you're done editting.</p>
                     </div>
             } else if (tile.type === TILE.GOLD) {
                 form = 
@@ -203,7 +215,6 @@ class EditorGrid extends Component {
                         pos, 'amount',
                         Number(e.target.value))}
                     />
-                    <p>Unclick the grid once you're done editing.</p>
                     </div>
             } else if (tile.type === TILE.WORM) {
                 form = 
@@ -224,7 +235,7 @@ class EditorGrid extends Component {
                     onChange={(e)=>this.updateEditResult(
                         pos, 'y',
                         Number(e.target.value))} />
-                    <p>Unclick the grid once you're done editing.</p>
+                    <p>Note: Bottom left grid is (0,0)</p>
                     </div>
             }
         }
@@ -243,7 +254,8 @@ class EditorGrid extends Component {
     changeSelectedItem = (type) => {
         this.reset();
         this.setState({
-            selectedItem: type
+            selectedItem: type,
+            editTile: null
         })
     }
 
@@ -266,8 +278,27 @@ class EditorGrid extends Component {
         return lst;
     }
 
+    getDifference = (cells1, cells2) => {
+        let newCells = this.initCells(this.state.width, this.state.height);
+        for (var y = 0; y < this.state.height; y++) {
+            for (var x = 0; x < this.state.width; x++) {
+                if (cells1[y][x] !== cells2[y][x]) {
+                    newCells[y][x] = true;
+                    break;
+                }
+            }
+        }
+        console.log(newCells);
+        return newCells;
+    }
+
     updateGrid = (cells) => {
         var newGrids = this.state.grid;
+
+        if (this.state.selectedItem === 'edit') {
+            cells = this.getDifference(cells, this.state.cells);
+        }
+
         for (var y = 0; y < cells.length; y++) {
             for (var x = 0; x < cells[y].length; x++) {
                 if (cells[y][x] === true) {
@@ -355,12 +386,27 @@ class EditorGrid extends Component {
 
     export = () => {
         let map = [];
+        let redBaseFlag = false;
+        let blueBaseFlag = true;
         for (var x = 0; x < this.state.width; x++) {
             for (var y = (this.state.height-1); y >= 0; y--) {
-                console.log(this.state.grid);
-                console.log(y);
-                map.push(this.tileToJson(this.state.grid[y][x]));
+                let tile = this.state.grid[y][x]
+                map.push(this.tileToJson(tile));
+                if (tile.type === TILE.BASE) {
+                    if (tile.team === 'Red') {
+                        redBaseFlag = true;
+                    } else if (tile.team === 'Blue') {
+                        blueBaseFlag = true;
+                    }
+                }
+                
             }
+        }
+
+        if (!redBaseFlag || !blueBaseFlag) {
+            //missing bases
+            alert('Missing Home Base');
+            return;
         }
 
         let obj = {
@@ -393,14 +439,41 @@ class EditorGrid extends Component {
         return (
             <div id="editorContainer">
                 <div id="editorHeader">
-                    <input 
-                    type="number" name="width" 
-                    value={this.state.width} 
-                    onChange={(e) => this.changeWidth(Number(e.target.value))}></input>
-                    <input 
-                    type="number" name="height" 
-                    value={this.state.height}
-                    onChange={(e) => this.changeHeight(Number(e.target.value))}></input>
+                    <div className='input-item'>
+                        <div className="label">Width: </div>
+                        <input 
+                        type="number" name="width" 
+                        value={this.state.width} 
+                        onChange={(e) => this.changeParams('width',Number(e.target.value))}></input>
+                    </div>
+                    <div className='input-item'>
+                        <div className="label">Height: </div>
+                        <input 
+                        type="number" name="height" 
+                        value={this.state.height}
+                        onChange={(e) => this.changeParams('height',Number(e.target.value))}></input>
+                    </div>
+                    <div className='input-item'>
+                        <div className="label">Vision: </div>
+                        <input 
+                        type="number" name="vision" 
+                        value={this.state.vision}
+                        onChange={(e) => this.changeParams('vision',Number(e.target.value))}></input>
+                    </div>
+                    <div className='input-item'>
+                        <div className="label">Gold Cap: </div>
+                        <input 
+                        type="number" name="max_gold" 
+                        value={this.state.max_gold}
+                        onChange={(e) => this.changeParams('max_gold',Number(e.target.value))}></input>
+                    </div>
+                    <div className='input-item'>
+                        <div className="label">Bot Cap: </div>
+                        <input 
+                        type="number" name="max_bots" 
+                        value={this.state.max_bots}
+                        onChange={(e) => this.changeParams('max_bots',Number(e.target.value))}></input>
+                    </div>
                 </div>
                 <TableDragSelect
                 value={this.state.cells}

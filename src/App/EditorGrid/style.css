@@ -1,9 +1,9 @@
 /* All Cells */
 
 .table-drag-select {
-    width: 100%;
     overflow: scroll;
     color: white;
+    width: auto;
 }
 .table-drag-select td{
     width: 30px;
@@ -23,6 +23,12 @@
 .table-drag-select td.cell-enabled {
     color: white;
     background-color: #FBF1E8;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+    max-width: 30px;
+    max-height: 30px;
 }
 
 /* Cells that cannot be interacted with */
@@ -118,8 +124,16 @@
     background-position: center center;
 }
 
+#editorHeader {
+    padding: 1%;
+    display: flex;
+    justify-content: space-around;
+}
+
+
 #toolBox {
-    display: flex;  
+    display: flex;
+    justify-content: center;
 }
 
 .tool-item {
@@ -131,3 +145,4 @@
 #toolBox .selected {
     border: 2px solid gold;
 }
+
