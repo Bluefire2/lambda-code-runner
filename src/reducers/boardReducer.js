@@ -23,10 +23,10 @@ export default (state = initialState, action) => {
                 squaredMap = squarify(map, height, width),
                 bases = getBases(squaredMap),
                 // for testing: delete after processMove is done.
-                testBots = {
-                    0: {team: "Red", xy: bases["Red"], gold: 0, lastDeposit: [], wormHistory: []},
-                    1: {team: "Blue", xy: bases["Blue"], gold: 0, lastDeposit: [], wormHistory: []},
-                },
+                testBots = [
+                    {handle: 0, team: "Red", xy: bases["Red"], gold: 0, lastDeposit: [], wormHistory: []},
+                    {handle: 1, team: "Blue", xy: bases["Blue"], gold: 0, lastDeposit: [], wormHistory: []},
+                ],
                 teamsWithScores = {};
             teams.forEach(team => teamsWithScores[team] = 0);
             return {
@@ -56,8 +56,7 @@ export default (state = initialState, action) => {
                     moves: state.moves,
                     nextMove: nextOrPrevious ? nextMove + 1 : nextMove - 1 // mfw
                 };
-            processMove(state, moveToExecute, nextOrPrevious);
-            return newState;
+            return processMove(newState, moveToExecute, nextOrPrevious);
         default:
             return state
     }
