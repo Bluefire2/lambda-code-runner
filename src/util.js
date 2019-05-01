@@ -56,9 +56,10 @@ export const processMove = (board, move, forward) => {
             const {direction} = move,
                 robot = board.robots[handle];
 
+            console.log(robot);
             let [dx, dy] = directionToCoordinates(direction),
                 [x, y] = robot.xy,
-                fromTile = board.map[x][y];
+                fromTile = board.map[y][x];
 
             // if the move is backwards, we invert the co-ordinate changes
             if (!forward) {
@@ -71,7 +72,7 @@ export const processMove = (board, move, forward) => {
                 robot.xy = [x + dx, y + dy];
             }
 
-            let toTile = board.map[robot.xy[0]][robot.xy[1]];
+            let toTile = board.map[robot.xy[1]][robot.xy[0]];
 
             if (forward) {
                 //forward stepping
@@ -119,7 +120,7 @@ export const processMove = (board, move, forward) => {
                 robot = board.robots[handle],
                 [x, y] = robot.xy,
                 [dx, dy] = directionToCoordinates(direction),
-                tile = board.map[x + dx][y + dy];
+                tile = board.map[y + dy][x + dx];
 
             if (tile.type === TILE.GOLD) {
                 if (forward) {
