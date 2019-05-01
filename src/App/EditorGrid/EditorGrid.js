@@ -49,6 +49,7 @@ class EditorGrid extends Component {
                     grid: this.initGrids(newValue, this.state.height),
                     lastgrid: this.initGrids(newValue, this.state.height)
                 });
+                this.forceUpdate()
             } else if (field === 'height') {
                 let newCells = this.initCells(this.state.width, newValue);
                 this.setState({
@@ -57,6 +58,7 @@ class EditorGrid extends Component {
                     grid: this.initGrids(this.state.width, newValue),
                     lastgrid: this.initGrids(this.state.width, newValue)
                 })
+                this.forceUpdate();
             } else if (field === 'vision') {
                 this.setState({
                     vision: newValue
@@ -411,6 +413,7 @@ class EditorGrid extends Component {
 
         if (redBaseFlag !== 1 || blueBaseFlag !== 1) {
             //missing bases
+            console.log(redBaseFlag, blueBaseFlag);
             alert('Each team must have exactly one homebase.');
             return;
         }

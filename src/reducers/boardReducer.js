@@ -38,7 +38,7 @@ export default (state = initialState, action) => {
                 teams: teamsWithScores,
                 teamNames: teams,
                 bases,
-                robots: testBots, // no robots at the start
+                robots: [], // no robots at the start
                 moves,
                 nextMove: 0
             };

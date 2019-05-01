@@ -30,6 +30,9 @@ class App extends Component {
                 {/*For testing*/}
                 <button onClick={() => this.props.runSequentialMove(false)}>Previous Move</button>
                 <button onClick={() => this.props.runSequentialMove(true)}>Next Move</button>
+
+                <br/>
+                <EditorGrid/>
             </div>
         );
     }
