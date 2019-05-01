@@ -3,25 +3,37 @@ import {LOAD_FILE_ACTION, MOVE_ACTION} from "../actions";
 
 // TODO: document board object schema
 
-export default (state = {}, action) => {
+const initialState = {
+    // map: [],
+    // maxGold: 0,
+    // maxBots: 0,
+    // width: 0,
+    // height: 0,
+    // teams: [],
+    // teamNames: [],
+    // bases: {},
+    // robots: {}
+};
+
+export default (state = initialState, action) => {
     switch (action.type) {
         case fulfilled(LOAD_FILE_ACTION):
             // load new map
-            const {map, width, height, teams, max_gold, max_bots} = action.payload,
+            const {map, width, height, teams, max_gold: maxGold, max_bots: maxBots} = action.payload,
                 squaredMap = squarify(map, height, width),
                 bases = getBases(squaredMap),
                 // for testing: delete after processMove is done.
                 testBots = {
-                    0: {team: "Red", xy: bases["Red"]},
-                    1: {team: "Blue", xy: bases["Blue"]},
-                    },
+                    0: {team: "Red", xy: bases["Red"], gold: 0, lastDeposit: []},
+                    1: {team: "Blue", xy: bases["Blue"], gold: 0, lastDeposit: []},
+                },
                 teamsWithScores = {};
             teams.forEach(team => teamsWithScores[team] = 0);
             console.log(bases);
             return {
                 map: squaredMap,
-                max_gold,
-                max_bots,
+                maxGold,
+                maxBots,
                 width,
                 height,
                 teams: teamsWithScores,
@@ -84,7 +96,7 @@ const squarify = (map, height, width) => {
         //     row++;
         // }
         if (row < height - 1) {
-            row ++;
+            row++;
         } else {
             column++;
             row = 0;

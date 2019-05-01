@@ -22,15 +22,12 @@ export const MOVE = {
 };
 
 export const TILE = {
-    BASE: "Base",
-    WALL: "Wall",
-    PATH: "Path",
-    GOLD: "Gold",
-    WORM: "Wormhole"
+    BASE: "B",
+    WALL: "W",
+    PATH: "P",
+    GOLD: "G",
+    WORM: "Worm"
 };
-
-
-const TAKE_GOLD_AMOUNT = 10; // TODO: what is the actual value of this?
 
 export const pending = name => name + "_PENDING";
 export const fulfilled = name => name + "_FULFILLED";
@@ -60,7 +57,8 @@ export const processMove = (board, move, forward) => {
                 robot = board.robots[handle];
 
             let [dx, dy] = directionToCoordinates(direction),
-                [x, y] = robot.xy;
+                [x, y] = robot.xy,
+                fromTile = board.map[x][y];
 
             // if the move is backwards, we invert the co-ordinate changes
             if (!forward) {
@@ -72,11 +70,52 @@ export const processMove = (board, move, forward) => {
                 && isBetween(0, board.height, y + dy)) {
                 robot.xy = [x + dx, y + dy];
             }
+
+            let toTile = board.map[robot.xy[0]][robot.xy[1]];
+
+            if (forward) {
+                //forward stepping
+                if (toTile === TILE.WORM) {
+                    //moving towards wormhole
+                    //ASSUMPTION: wormhole only leads to paths
+                    robot.wormHistory.push(robot.xy); //add wormhole pos to history
+                    robot.xy = toTile.out;
+                }
+                else if (toTile === TILE.BASE) {
+                    //moving towards homebase
+                    let team = toTile.team;
+                    //add robot's gold to the base team
+                    board.teams[team] += robot.gold;
+                    robot.lastDeposit.push(robot.gold);
+                    robot.gold = 0;
+                    robot.wormHistory.push([-1,-1]); //not from wormhole
+                } else {
+                    robot.wormHistory.push([-1,-1]); //not from wormhole
+                }
+            } else {
+                //back stepping
+                let lastIsWorm = robot.wormHistory.pop();
+                if (lastIsWorm[0] !== -1 && lastIsWorm[1] !== -1) {
+                    //back stepping for wormhole
+                    robot.xy = [lastIsWorm[0] + dx][lastIsWorm[-1]+dy];
+                } else if (fromTile === TILE.BASE) {
+                    //stepping back from base
+                    let lastDepo = robot.lastDeposit.pop();
+                    if (lastDepo !== undefined) {
+                        board.teams[fromTile.team] -= lastDepo;
+                        robot.gold += lastDepo;
+                    } else {
+                        //should not happen
+                        console.log("stepping back with undefined last deposit");
+                    }
+                }
+            }
+
             break;
         }
         case MOVE.TYPE.TAKE: {
             // take/return gold
-            const {direction} = move,
+            const {direction, amount} = move,
                 robot = board.robots[handle],
                 [x, y] = robot.xy,
                 [dx, dy] = directionToCoordinates(direction),
@@ -85,20 +124,16 @@ export const processMove = (board, move, forward) => {
             if (tile.type === TILE.GOLD) {
                 if (forward) {
                     // take some gold from the pile, if there's any left
-                    if (tile.amount > 0) {
+                    if (amount > 0) {
                         // move gold from pile into the team's score counter
-                        let goldTaken = Math.min(TAKE_GOLD_AMOUNT, tile.amount);
-                        tile.amount -= goldTaken;
-                        board.teams[team] += goldTaken;
+                        tile.amount -= amount;
+                        robot.gold += amount;
                     }
                 } else {
                     // return gold to pile
-                    // no need to check that the team has more than zero since this is an inverse move
-                    // TODO: implement this part
+                    tile.amount += amount;
+                    robot.gold -= amount;
                 }
-            } else {
-                // ?????
-                // TODO: can we assume that every move is valid
             }
             break;
         }
@@ -107,7 +142,9 @@ export const processMove = (board, move, forward) => {
                 // spawn new robot
                 board.robots[handle] = {
                     team,
-                    xy: board.bases[team] // spawn at the home base location
+                    xy: board.bases[team], // spawn at the home base location
+                    gold: 0,
+                    lastDeposit: []
                 };
             } else {
                 // delete existing robot

@@ -230,6 +230,7 @@ class EditorGrid extends Component {
                         pos, 'y',
                         Number(e.target.value))} />
                     <p>Note: Bottom left grid is (0,0)</p>
+                    <p>Out position must be a Path.</p>
                     </div>
             }
         }
