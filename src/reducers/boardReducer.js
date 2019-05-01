@@ -63,6 +63,8 @@ export default (state = initialState, action) => {
     }
 }
 
+const adjustXY = (width, height, [x, y]) => [height - x - 1, width - y - 1];
+
 /**
  * Get all the team home base locations from a map.
  *
@@ -70,13 +72,15 @@ export default (state = initialState, action) => {
  * @return An object mapping team names to home base locations.
  */
 const getBases = map => {
-    const bases = {};
+    const bases = {},
+        width = map.length,
+        height = map[0].length;
     for (let i = 0; i < map.length; i++) {
         const row = map[i];
         for (let j = 0; j < row.length; j++) {
             const elem = row[j];
             if (elem.type === TILE.BASE) {
-                bases[elem.team] = [j, i];
+                bases[elem.team] = adjustXY(width, height, [j, i]);
             }
         }
     }
