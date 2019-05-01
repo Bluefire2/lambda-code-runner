@@ -352,26 +352,26 @@ class EditorGrid extends Component {
     tileToJson(tile) {
         if (tile.type === TILE.WORM) {
             return {
-                type: 'Wormhole',
+                type: tile.Type,
                 out: [tile.out[0], this.state.height - tile.out[1] - 1]
             }
         } else if (tile.type === TILE.PATH) {
             return {
-                type: 'Path',
+                type: tile.type,
                 cost: tile.cost
             };
         } else if (tile.type === TILE.GOLD) {
             return {
-                type: 'Gold',
+                type: tile.type,
                 amount: tile.amount
             }
         } else if (tile.type === TILE.WALL) {
             return {
-                type: 'Wall'
+                type: tile.type
             }
         } else if (tile.type === TILE.BASE) {
             return {
-                type: 'Base',
+                type: tile.type,
                 team: tile.team
             }
         }
@@ -383,14 +383,14 @@ class EditorGrid extends Component {
         let redBaseFlag = 0;
         let blueBaseFlag = 0;
         for (let x = 0; x < this.state.width; x++) {
-            for (let y = (this.state.height-1); y >= 0; y--) {
+            for (let y = 0; y <this.state.height; y++) {
                 let tile = this.state.grid[y][x]
                 map.push(this.tileToJson(tile));
                 if (tile.type === TILE.BASE) {
                     if (tile.team === 'Red') {
-                        redBaseFlag ++;
+                        redBaseFlag += 1;
                     } else if (tile.team === 'Blue') {
-                        blueBaseFlag ++;
+                        blueBaseFlag += 1;
                     }
                 }
                 
@@ -410,7 +410,8 @@ class EditorGrid extends Component {
             max_bots: this.state.max_bots,
             teams: ["Blue", "Red"],
             vision: 2,
-            map: map
+            map: map,
+            moves: []
         }
 
         let text = JSON.stringify(obj);
