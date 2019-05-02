@@ -18,11 +18,12 @@ class App extends Component {
         return (
             <div className="App">
                 <Header/>
-                <div id="data" style={{height: 52 * height}}>
+                {/* style={{height: 52 * height}} */}
+                <div id="data" style={{height: 32 * height}}>
                     <div style={{flex: 2}}>
                         <MapContainer/>
                     </div>
-                    <div style={{flex: "1", overflowY: "scroll", overflowX: "auto"}}>
+                    <div style={{flex: "1", overflowY: "scroll", overflowX: "scroll"}}>
                         <MovesListContainer/>
                     </div>
                     <br/>
