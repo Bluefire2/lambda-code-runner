@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import './App.css';
 import Header from './Header';
+import EditorGrid from './EditorGrid';
 import MapContainer from "./MapContainer";
 import MovesListContainer from "./MovesListContainer";
 import {bindActionCreators} from "redux";
@@ -24,10 +25,14 @@ class App extends Component {
                     <div style={{flex: "1", overflowY: "scroll", overflowX: "auto"}}>
                         <MovesListContainer/>
                     </div>
+                    <br/>
                 </div>
                 {/*For testing*/}
                 <button onClick={() => this.props.runSequentialMove(false)}>Previous Move</button>
                 <button onClick={() => this.props.runSequentialMove(true)}>Next Move</button>
+
+                <br/>
+                <EditorGrid/>
             </div>
         );
     }

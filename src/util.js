@@ -120,10 +120,10 @@ export const processMove = (board, move, forward) => {
             case MOVE.TYPE.TAKE: {
                 // take/return gold
                 const {direction, amount} = move,
-                    robot = board.robots[handle],
+                robot = newBoard.robots.find(bot => bot.handle === handle),
                     [x, y] = robot.xy,
                     [dx, dy] = directionToCoordinates(direction),
-                    tile = board.map[y + dy][x + dx];
+                    tile = newBoard.map[y + dy][x + dx];
 
                 if (tile.type === TILE.GOLD) {
                     if (forward) {

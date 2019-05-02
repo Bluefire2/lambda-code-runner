@@ -6,16 +6,29 @@ import redBot from '../red_robot_128.svg';
 import blueBot from '../blue_robot_128.svg';
 
 export default ({tile, robots}) => {
-    const {type} = tile,
-        style = {};
+    const style = {};
+    
+    let type = tile.type;
     if (type === TILE.BASE) {
         style["border"] = `1px solid ${tile.team.toLowerCase()}`; // TODO make this nicer!
     }
 
     let contents = "";
     if (type === TILE.GOLD) {
-        contents = tile.amount;
-    } else if (type === TILE.PATH) {
+        if (tile.amount === 0) {
+            //no gold left, switch to path
+            tile = {
+                type: TILE.PATH,
+                cost: 10
+            };
+            type = TILE.PATH;
+        } else {
+            contents = tile.amount;
+        }
+        
+    }
+    
+    if (type === TILE.PATH) {
         contents = tile.cost;
     }
 
