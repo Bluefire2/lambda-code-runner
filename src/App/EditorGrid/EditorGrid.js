@@ -120,7 +120,7 @@ class EditorGrid extends Component {
                     row.push(
                         <td className={classNames('grid', 'path')}
                          key={currx + "|" + curry}>
-                        {this.state.grid[curry][currx].cost}
+                        {/* {this.state.grid[curry][currx].cost} */}
                         </td>
                     );
                 } else if (cell.type === TILE.WALL) {
@@ -167,7 +167,7 @@ class EditorGrid extends Component {
                 type: TILE.PATH,
                 cost: newValue
             }
-        } else if (field === 'amount') {
+        } else if (field === 'amount' && newValue < 10 && newValue > 0) {
             newGrid[y][x] = {
                 type: TILE.GOLD,
                 amount: newValue
@@ -198,20 +198,21 @@ class EditorGrid extends Component {
         let form = "";
         if (pos !== null && pos !== undefined && this.inBounds(pos)) {
             const tile = this.state.grid[pos[1]][pos[0]];
-            if (tile.type === TILE.PATH) {
-                form = 
-                    <div className="edit-item">
-                    <div className="edit-item-label">Cost: </div>
-                    <input 
-                    key={0}
-                    type="number" 
-                    value={this.state.grid[pos[1]][pos[0]].cost}
-                    onChange={(e)=>this.updateEditResult(
-                        pos, 'cost',
-                        Number(e.target.value))}
-                    />
-                    </div>
-            } else if (tile.type === TILE.GOLD) {
+            // if (tile.type === TILE.PATH) {
+            //     form = 
+            //         <div className="edit-item">
+            //         <div className="edit-item-label">Cost: </div>
+            //         <input 
+            //         key={0}
+            //         type="number" 
+            //         value={this.state.grid[pos[1]][pos[0]].cost}
+            //         onChange={(e)=>this.updateEditResult(
+            //             pos, 'cost',
+            //             Number(e.target.value))}
+            //         />
+            //         </div>
+            // } else 
+            if (tile.type === TILE.GOLD) {
                 form = 
                     <div className="edit-item">
                     <div className="edit-item-label">Amount: </div>
