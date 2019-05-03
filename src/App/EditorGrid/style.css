@@ -175,5 +175,6 @@ button {
 button:hover {
     background-color: #C0b283;
     color: #f4f4f4;
+    cursor: pointer;
 }
 

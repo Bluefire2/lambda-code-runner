@@ -12,3 +12,18 @@
 .header-item {
     flex: 1;
 }
+
+button, ::-webkit-file-upload-button {
+    font-size: 2em;
+    border: 2px solid #C0b283;
+    border-radius: 5px;
+    
+    background-color: #f4f4f4;
+    color: #373737;
+}
+
+button:hover, ::-webkit-file-upload-button:hover {
+    background-color: #C0b283;
+    color: #f4f4f4;
+    cursor: pointer;
+}
