@@ -40,8 +40,9 @@ class App extends Component {
                     <div id="buttons">
                         <button onClick={() => this.props.runSequentialMove(false)}
                                 disabled={nextMove === 0}>Previous Move</button>
+
                         <button onClick={() => this.props.runSequentialMove(true)}
-                        disabled={nextMove >= totalMoves}>Next Move</button>
+                                disabled={nextMove >= totalMoves}>Next Move</button>
                     </div>
                 }
 

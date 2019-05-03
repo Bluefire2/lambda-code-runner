@@ -57,8 +57,6 @@ export default (state = initialState, action) => {
     }
 }
 
-const adjustXY = (width, height, [x, y]) => [height - x - 1, width - y - 1];
-
 /**
  * Get all the team home base locations from a map.
  *
@@ -66,9 +64,7 @@ const adjustXY = (width, height, [x, y]) => [height - x - 1, width - y - 1];
  * @return An object mapping team names to home base locations.
  */
 const getBases = map => {
-    const bases = {},
-        width = map.length,
-        height = map[0].length;
+    const bases = {};
     for (let i = 0; i < map.length; i++) {
         const row = map[i];
         for (let j = 0; j < row.length; j++) {
