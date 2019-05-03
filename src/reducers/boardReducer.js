@@ -1,5 +1,5 @@
 import {fulfilled, processMove, TILE} from "../util";
-import {LOAD_FILE_ACTION, MOVE_ACTION, SEQUENTIAL_MOVE_ACTION} from "../actions";
+import {Action} from "../actions";
 
 // TODO: document board object schema
 
@@ -17,7 +17,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case fulfilled(LOAD_FILE_ACTION): {
+        case fulfilled(Action.LOAD_FILE_ACTION): {
             // load new map
             const {map, width, height, teams, max_gold: maxGold, max_bots: maxBots, moves} = action.payload,
                 squaredMap = squarify(map, height, width),
@@ -38,11 +38,11 @@ export default (state = initialState, action) => {
                 nextMove: 0
             };
         }
-        case MOVE_ACTION:
+        case Action.MOVE_ACTION:
             // make a move!
             const {forward, move} = action.payload;
             return processMove(state, move, forward);
-        case SEQUENTIAL_MOVE_ACTION:
+        case Action.SEQUENTIAL_MOVE_ACTION:
             const {next: nextOrPrevious} = action.payload,
                 {moves, nextMove} = state;
             const moveToExecute = nextOrPrevious ? moves[nextMove] : moves[nextMove - 1],
