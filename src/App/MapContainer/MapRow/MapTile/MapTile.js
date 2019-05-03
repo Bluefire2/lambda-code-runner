@@ -6,24 +6,37 @@ import redBot from '../red_robot_128.svg';
 import blueBot from '../blue_robot_128.svg';
 
 export default ({tile, robots}) => {
-    const {type} = tile,
-        style = {};
+    const style = {};
+    
+    let type = tile.type;
     if (type === TILE.BASE) {
         style["border"] = `1px solid ${tile.team.toLowerCase()}`; // TODO make this nicer!
     }
 
     let contents = "";
     if (type === TILE.GOLD) {
-        contents = tile.amount;
-    } else if (type === TILE.PATH) {
+        if (tile.amount === 0) {
+            //no gold left, switch to path
+            tile = {
+                type: TILE.PATH,
+                cost: 10
+            };
+            type = TILE.PATH;
+        } else {
+            contents = tile.amount;
+        }
+        
+    }
+    
+    if (type === TILE.PATH) {
         contents = tile.cost;
     }
 
     const bots = robots.map(({team, handle}) => {
         if (team === "Red") {
-            return <img key={handle} className="bot-img" src={redBot} alt="RBot" />;
+            return <img key={'red'+handle} className="bot-img" src={redBot} alt="RBot" />;
         } else if (team === "Blue") {
-            return <img key={handle} className="bot-img" src={blueBot} alt="BBot" />;
+            return <img key={'blue'+handle} className="bot-img" src={blueBot} alt="BBot" />;
         } else {
             return null; // >:(
         }

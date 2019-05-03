@@ -80,12 +80,12 @@ export const processMove = (board, move, forward) => {
 
                 if (forward) {
                     //forward stepping
-                    if (toTile === TILE.WORM) {
+                    if (toTile.type === TILE.WORM) {
                         //moving towards wormhole
                         //ASSUMPTION: wormhole only leads to paths
                         robot.wormHistory.push(robot.xy); //add wormhole pos to history
                         robot.xy = toTile.out;
-                    } else if (toTile === TILE.BASE) {
+                    } else if (toTile.type === TILE.BASE) {
                         //moving towards homebase
                         let team = toTile.team;
                         //add robot's gold to the base team
@@ -120,10 +120,10 @@ export const processMove = (board, move, forward) => {
             case MOVE.TYPE.TAKE: {
                 // take/return gold
                 const {direction, amount} = move,
-                    robot = board.robots[handle],
+                robot = newBoard.robots.find(bot => bot.handle === handle),
                     [x, y] = robot.xy,
                     [dx, dy] = directionToCoordinates(direction),
-                    tile = board.map[y + dy][x + dx];
+                    tile = newBoard.map[y + dy][x + dx];
 
                 if (tile.type === TILE.GOLD) {
                     if (forward) {

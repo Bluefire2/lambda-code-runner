@@ -16,7 +16,7 @@ class Header extends Component {
             moves: all moves
             next: next index of move
         */
-        const {teamNames, teams, maxGold, moves, next} = this.props;
+        const {teamNames, teams, maxGold, moves, nextMove} = this.props;
         const input = <FieldFileInput className="header-item"
                                       label={"Import"}
                                       types={".json"}
@@ -44,8 +44,7 @@ class Header extends Component {
                 {/* <div className="header-item" id="NumBots">{numBots}</div> */}
                 <div className="header-item" id="MovesLeft">
                     <div className="section-head" key={"gold"}>Gold Cap: {maxGold}</div>
-                    <div className="section-head" key={"move-head"}>Moves Left:</div>
-                    <div id="MovesCounter" key="move">{next} / {moves.length}</div>
+                    <div className="section-head" key={"move-head"}>Moves: {nextMove} / {moves.length}</div>
                 </div>
             </div>
         );

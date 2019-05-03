@@ -38,7 +38,7 @@ export default (state = initialState, action) => {
                 teams: teamsWithScores,
                 teamNames: teams,
                 bases,
-                robots: testBots, // no robots at the start
+                robots: [], // no robots at the start
                 moves,
                 nextMove: 0
             };
@@ -50,11 +50,11 @@ export default (state = initialState, action) => {
         case SEQUENTIAL_MOVE_ACTION:
             const {next: nextOrPrevious} = action.payload,
                 {moves, nextMove} = state;
-            const moveToExecute = nextOrPrevious ? moves[nextMove] : moves[nextMove - 2],
+            const moveToExecute = nextOrPrevious ? moves[nextMove] : moves[nextMove - 1],
                 newState = {
                     ...state,
                     moves: state.moves,
-                    nextMove: nextOrPrevious ? nextMove + 1 : nextMove - 1 // mfw
+                    nextMove: nextOrPrevious ? nextMove + 1 : nextMove -1 // mfw
                 };
             return processMove(newState, moveToExecute, nextOrPrevious);
         default:
@@ -79,7 +79,7 @@ const getBases = map => {
         for (let j = 0; j < row.length; j++) {
             const elem = row[j];
             if (elem.type === TILE.BASE) {
-                bases[elem.team] = adjustXY(width, height, [j, i]);
+                bases[elem.team] = [j,i];
             }
         }
     }
