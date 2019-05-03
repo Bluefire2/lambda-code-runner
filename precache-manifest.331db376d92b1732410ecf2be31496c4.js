@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/lambdaball/static/media/grass-background.c1e33cd8.png"
   },
   {
-    "revision": "519b5ea64677e0dd7540",
+    "revision": "d5cbd568a17b0648a733",
     "url": "/lambdaball/static/css/main.05aac435.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = [
     "url": "/lambdaball/static/js/2.65a1e339.chunk.js"
   },
   {
-    "revision": "519b5ea64677e0dd7540",
-    "url": "/lambdaball/static/js/main.3bbceffe.chunk.js"
+    "revision": "d5cbd568a17b0648a733",
+    "url": "/lambdaball/static/js/main.d980813b.chunk.js"
   },
   {
     "revision": "168b46bfe3fdd42225abc81cfaa40ee9",
@@ -40,7 +40,7 @@ self.__precacheManifest = [
     "url": "/lambdaball/static/css/2.13ca28b1.chunk.css"
   },
   {
-    "revision": "a7b847f80ac4132483a4d1e8b8632853",
+    "revision": "cf78e668ebb5de4a292806fec15a3857",
     "url": "/lambdaball/index.html"
   }
 ];
