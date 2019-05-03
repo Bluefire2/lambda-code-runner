@@ -53,6 +53,7 @@ export const arrayBufferToString = buf =>
  */
 export const processMove = (board, move, forward) => {
     return produce(board, newBoard => {
+        console.log(move);
         const {command: type, team, handle} = move;
         switch (type) {
             case MOVE.TYPE.MOVE: {

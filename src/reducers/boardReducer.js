@@ -50,11 +50,11 @@ export default (state = initialState, action) => {
         case SEQUENTIAL_MOVE_ACTION:
             const {next: nextOrPrevious} = action.payload,
                 {moves, nextMove} = state;
-            const moveToExecute = nextOrPrevious ? moves[nextMove] : moves[nextMove - 2],
+            const moveToExecute = nextOrPrevious ? moves[nextMove] : moves[nextMove - 1],
                 newState = {
                     ...state,
                     moves: state.moves,
-                    nextMove: nextOrPrevious ? nextMove + 1 : nextMove - 1 // mfw
+                    nextMove: nextOrPrevious ? nextMove + 1 : nextMove -1 // mfw
                 };
             return processMove(newState, moveToExecute, nextOrPrevious);
         default:

@@ -34,9 +34,9 @@ export default ({tile, robots}) => {
 
     const bots = robots.map(({team, handle}) => {
         if (team === "Red") {
-            return <img key={handle} className="bot-img" src={redBot} alt="RBot" />;
+            return <img key={'red'+handle} className="bot-img" src={redBot} alt="RBot" />;
         } else if (team === "Blue") {
-            return <img key={handle} className="bot-img" src={blueBot} alt="BBot" />;
+            return <img key={'blue'+handle} className="bot-img" src={blueBot} alt="BBot" />;
         } else {
             return null; // >:(
         }
