@@ -1,10 +1,11 @@
 import {fulfilled} from "../util";
 import {Action} from "../actions";
 
-export default (state = false, action) => {
+export default (state = {initialized: false, play: false}, action) => {
     switch (action.type) {
         case fulfilled(Action.LOAD_FILE_ACTION):
-            return true;
+            const {play} = state;
+            return {initialized: true, play};
         default:
             return state;
     }

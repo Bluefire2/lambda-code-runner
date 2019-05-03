@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import './App.css';
 import Header from './Header';
@@ -6,7 +6,7 @@ import EditorGrid from './EditorGrid';
 import MapContainer from "./MapContainer";
 import MovesListContainer from "./MovesListContainer";
 import {bindActionCreators} from "redux";
-import {runSequentialMove} from "../actions";
+import {playGame, runSequentialMove, stopGame} from "../actions";
 
 class App extends Component {
     constructor(props) {
@@ -18,7 +18,7 @@ class App extends Component {
     }
 
     render() {
-        let {height, nextMove, totalMoves, initialized} = this.props;
+        let {height, nextMove, totalMoves, initialized, play} = this.props;
         if (height === void 0) {
             height = 0;
         }
@@ -39,10 +39,14 @@ class App extends Component {
                 {initialized &&
                     <div id="buttons">
                         <button onClick={() => this.props.runSequentialMove(false)}
-                                disabled={nextMove === 0}>Previous Move</button>
+                                disabled={play || nextMove === 0}>Previous Move</button>
+
+                        <button onClick={() => this.props.stopGame()} disabled={!play}>Stop</button>
+
+                        <button onClick={() => this.props.playGame()} disabled={play}> Play</button>
 
                         <button onClick={() => this.props.runSequentialMove(true)}
-                                disabled={nextMove >= totalMoves}>Next Move</button>
+                                disabled={play || nextMove >= totalMoves}>Next Move</button>
                     </div>
                 }
 
@@ -53,15 +57,17 @@ class App extends Component {
     }
 }
 
-const mapStateToProps = ({board: {height, nextMove, moves}, initialized}) => {
+const mapStateToProps = ({board: {height, nextMove, moves}, gameStatus: {initialized, play}}) => {
     const totalMoves = typeof moves === "undefined" ? 0 : moves.length;
-    return {height, nextMove, totalMoves, initialized};
+    return {height, nextMove, totalMoves, initialized, play};
 };
 
 // for testing
 // TODO: remove this when done
 const mapDispatchToProps = dispatch => {
     return bindActionCreators({
+        playGame,
+        stopGame,
         runSequentialMove
     }, dispatch);
 };

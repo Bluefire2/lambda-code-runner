@@ -1,10 +1,10 @@
 import {combineReducers} from 'redux';
 import boardReducer from "./boardReducer";
-import initializedReducer from "./initializedReducer";
+import gameStatusReducer from "./gameStatusReducer";
 
 const rootReducer = combineReducers({
     board: boardReducer,
-    initialized: initializedReducer
+    gameStatus: gameStatusReducer
 });
 
 export default rootReducer;

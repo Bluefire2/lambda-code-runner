@@ -40,6 +40,18 @@ export function runSequentialMove(next = true) {
     };
 }
 
+export function playGame() {
+    return {
+        type: Action.SEQUENTIAL_MOVE_CYCLE
+    };
+}
+
+export function stopGame() {
+    return {
+        type: Action.SEQUENTIAL_MOVE_CYCLE_STOP
+    };
+}
+
 export function loadFile(file) {
     const fileReadHandle = new Promise((resolve, reject) => {
         const reader = new FileReader();
