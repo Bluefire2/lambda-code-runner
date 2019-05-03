@@ -4,6 +4,7 @@ import "react-table-drag-select/style.css";
 import {TILE} from "../../util";
 import classNames from 'classnames';
 import "./style.css";
+import { saveAs } from 'file-saver';
 
 class EditorGrid extends Component {
     constructor (props) {
@@ -431,18 +432,30 @@ class EditorGrid extends Component {
             moves: []
         }
 
-        let text = JSON.stringify(obj);
-        let filename = "map.json";
-        let element = document.createElement('a');
-        element.setAttribute('href', 'data:application/octet-stream;charset=utf-8,' + encodeURIComponent(text));
-        element.setAttribute('download', filename);
+        
+        var fileName = 'map.json';
+        
+        // Create a blob of the data
+        var fileToSave = new Blob([JSON.stringify(obj)], {
+            type: 'application/json',
+            name: fileName
+        });
+        
+        // Save the file
+        saveAs(fileToSave, fileName);
 
-        element.style.display = 'none';
-        document.body.appendChild(element);
+        // let text = JSON.stringify(obj);
+        // let filename = "map.json";
+        // let element = document.createElement('a');
+        // element.setAttribute('href', 'data:application/octet-stream;charset=utf-8,' + encodeURIComponent(text));
+        // element.setAttribute('download', filename);
 
-        element.click();
+        // element.style.display = 'none';
+        // document.body.appendChild(element);
 
-        document.body.removeChild(element);
+        // element.click();
+
+        // document.body.removeChild(element);
     }
 
 
