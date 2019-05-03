@@ -527,11 +527,11 @@ class EditorGrid extends Component {
                     </div>
                     <br />
                     <div id="export">
-                    <button onClick={(e) => this.export()}>Export</button>
+                    <button className="cool-button" onClick={(e) => this.export()}>Export</button>
                     </div>
                 </div>
                 <br/>
-                <button onClick={(e) => this.showEditor()}>
+                <button className="cool-button" onClick={(e) => this.showEditor()}>
                 {this.state.show ? 'Hide Editor' : 'Show Editor'}
                 </button>
             </div>

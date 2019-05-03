@@ -38,14 +38,16 @@ class App extends Component {
                 </div>
                 {initialized &&
                     <div id="buttons">
-                        <button onClick={() => this.props.runSequentialMove(false)}
+                        <button className="cool-button" onClick={() => this.props.runSequentialMove(false)}
                                 disabled={play || nextMove === 0}>Previous Move</button>
 
-                        <button onClick={() => this.props.stopGame()} disabled={!play}>Stop</button>
+                        <button className="cool-button" onClick={() => this.props.stopGame()}
+                                disabled={!play}>Stop</button>
 
-                        <button onClick={() => this.props.playGame()} disabled={play}>Play</button>
+                        <button className="cool-button" onClick={() => this.props.playGame()}
+                                disabled={play}>Play</button>
 
-                        <button onClick={() => this.props.runSequentialMove(true)}
+                        <button className="cool-button" onClick={() => this.props.runSequentialMove(true)}
                                 disabled={play || nextMove >= totalMoves}>Next Move</button>
                     </div>
                 }
