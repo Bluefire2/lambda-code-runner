@@ -85,7 +85,7 @@ export const processMove = (board, move, forward) => {
                         //ASSUMPTION: wormhole only leads to paths
                         robot.wormHistory.push(robot.xy); //add wormhole pos to history
                         robot.xy = toTile.out;
-                    } else if (toTile.type === TILE.BASE) {
+                    } else if (toTile.type === TILE.BASE && toTile.team === team) {
                         //moving towards homebase
                         let team = toTile.team;
                         //add robot's gold to the base team
@@ -102,9 +102,11 @@ export const processMove = (board, move, forward) => {
                     if (lastIsWorm[0] !== -1 && lastIsWorm[1] !== -1) {
                         //back stepping for wormhole
                         robot.xy = [lastIsWorm[0] + dx][lastIsWorm[-1] + dy];
-                    } else if (fromTile === TILE.BASE) {
+                    } else if (fromTile.type === TILE.BASE && fromTile.team === team) {
                         //stepping back from base
+                        console.log('stepping back from base.');
                         let lastDepo = robot.lastDeposit.pop();
+                        console.log(lastDepo);
                         if (lastDepo !== undefined) {
                             newBoard.teams[fromTile.team] -= lastDepo;
                             robot.gold += lastDepo;
