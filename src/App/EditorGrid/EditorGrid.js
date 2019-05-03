@@ -99,7 +99,7 @@ class EditorGrid extends Component {
             for (let x = 0; x < w; x++) {
                 row.push({
                     type: TILE.PATH,
-                    cost: 10
+                    cost: 5
                 });
             }
             cells.push(row);
@@ -196,7 +196,7 @@ class EditorGrid extends Component {
 
     generateEditItem = () => {
         const pos = this.state.editTile;
-        let form = "";
+        let form = <p>This tile is not editable.</p>;
         if (pos !== null && pos !== undefined && this.inBounds(pos)) {
             const tile = this.state.grid[pos[1]][pos[0]];
             // if (tile.type === TILE.PATH) {
@@ -225,30 +225,32 @@ class EditorGrid extends Component {
                         pos, 'amount',
                         Number(e.target.value))}
                     />
+                    <p>Note: Gold tiles can only have amounts between 1 ~ 9</p>
                     </div>
-            } else if (tile.type === TILE.WORM) {
-                form = 
-                    <div className="edit-item">
-                    <div className="edit-item-label">To Position X: </div>
-                    <input 
-                    type="number" 
-                    key={2}
-                    value={this.state.grid[pos[1]][pos[0]].out[0]}
-                    onChange={(e)=>this.updateEditResult(
-                        pos, 'x',
-                        Number(e.target.value))} />
-                    <div className="edit-item-label">Y: </div>
-                    <input 
-                    type="number" 
-                    key={3}
-                    value={this.state.grid[pos[1]][pos[0]].out[1]}
-                    onChange={(e)=>this.updateEditResult(
-                        pos, 'y',
-                        Number(e.target.value))} />
-                    <p>Note: Bottom left grid is (0,0)</p>
-                    <p>Out position must be a Path.</p>
-                    </div>
-            }
+            } 
+            // else if (tile.type === TILE.WORM) {
+            //     form = 
+            //         <div className="edit-item">
+            //         <div className="edit-item-label">To Position X: </div>
+            //         <input 
+            //         type="number" 
+            //         key={2}
+            //         value={this.state.grid[pos[1]][pos[0]].out[0]}
+            //         onChange={(e)=>this.updateEditResult(
+            //             pos, 'x',
+            //             Number(e.target.value))} />
+            //         <div className="edit-item-label">Y: </div>
+            //         <input 
+            //         type="number" 
+            //         key={3}
+            //         value={this.state.grid[pos[1]][pos[0]].out[1]}
+            //         onChange={(e)=>this.updateEditResult(
+            //             pos, 'y',
+            //             Number(e.target.value))} />
+            //         <p>Note: Bottom left grid is (0,0)</p>
+            //         <p>Out position must be a Path.</p>
+            //         </div>
+            // }
         }
         return form;
         
@@ -273,7 +275,8 @@ class EditorGrid extends Component {
 
     generateToolBox = () => {
         let lst = [];
-        let items = ["path", "wall", "base-red", "base-blue", "worm", "gold", "edit", "done"];
+        let items = ["path", "base-red", "base-blue", "gold", "edit", "done"];
+        // let items = ["path", "wall", "base-red", "base-blue", "worm", "gold", "edit", "done"];
         for (let i = 0; i < items.length; i++) {
             let type = items[i];
             lst.push(
