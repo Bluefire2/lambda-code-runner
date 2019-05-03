@@ -22,7 +22,8 @@ class EditorGrid extends Component {
             max_bots: 4,
             vision: 2,
             show: false,
-            end_goal: 100,
+            end_goal: 50,
+            max_moves: 300
         }
     }
 
@@ -75,6 +76,10 @@ class EditorGrid extends Component {
             } else if (field === 'end_goal') {
                 this.setState({
                     end_goal: newValue
+                })
+            } else if (field === 'max_moves') {
+                this.setState({
+                    max_moves: newValue
                 })
             }
         }
@@ -429,6 +434,7 @@ class EditorGrid extends Component {
             max_gold: this.state.max_gold,
             max_bots: this.state.max_bots,
             end_goal: this.state.end_goal,
+            max_moves: this.state.max_moves,
             teams: ["Blue", "Red"],
             vision: 2,
             map: map,
@@ -446,19 +452,6 @@ class EditorGrid extends Component {
         
         // Save the file
         saveAs(fileToSave, fileName);
-
-        // let text = JSON.stringify(obj);
-        // let filename = "map.json";
-        // let element = document.createElement('a');
-        // element.setAttribute('href', 'data:application/octet-stream;charset=utf-8,' + encodeURIComponent(text));
-        // element.setAttribute('download', filename);
-
-        // element.style.display = 'none';
-        // document.body.appendChild(element);
-
-        // element.click();
-
-        // document.body.removeChild(element);
     }
 
 
@@ -510,6 +503,13 @@ class EditorGrid extends Component {
                             type="number" name="end_goal" 
                             value={this.state.end_goal}
                             onChange={(e) => this.changeParams('end_goal',Number(e.target.value))}></input>
+                        </div>
+                        <div className='input-item'>
+                            <div className="label">Max Moves: </div>
+                            <input 
+                            type="number" name="max_moves" 
+                            value={this.state.max_moves}
+                            onChange={(e) => this.changeParams('max_moves',Number(e.target.value))}></input>
                         </div>
                     </div>
                     <TableDragSelect
