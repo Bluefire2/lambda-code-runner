@@ -9,8 +9,16 @@ import {bindActionCreators} from "redux";
 import {runSequentialMove} from "../actions";
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+
+        };
+    }
+
     render() {
-        let {height} = this.props;
+        let {height, nextMove, totalMoves, initialized} = this.props;
         if (height === void 0) {
             height = 0;
         }
@@ -28,9 +36,14 @@ class App extends Component {
                     </div>
                     <br/>
                 </div>
-                {/*For testing*/}
-                <button onClick={() => this.props.runSequentialMove(false)}>Previous Move</button>
-                <button onClick={() => this.props.runSequentialMove(true)}>Next Move</button>
+                {initialized &&
+                    <div id="buttons">
+                        <button onClick={() => this.props.runSequentialMove(false)}
+                                disabled={nextMove === 0}>Previous Move</button>
+                        <button onClick={() => this.props.runSequentialMove(true)}
+                        disabled={nextMove >= totalMoves}>Next Move</button>
+                    </div>
+                }
 
                 <br/>
                 <EditorGrid/>
@@ -39,8 +52,9 @@ class App extends Component {
     }
 }
 
-const mapStateToProps = ({board: {height}}) => {
-    return {height};
+const mapStateToProps = ({board: {height, nextMove, moves}, initialized}) => {
+    const totalMoves = typeof moves === "undefined" ? 0 : moves.length;
+    return {height, nextMove, totalMoves, initialized};
 };
 
 // for testing
