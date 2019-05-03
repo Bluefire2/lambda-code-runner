@@ -178,3 +178,8 @@ button:hover {
     cursor: pointer;
 }
 
+button:disabled {
+    cursor: no-drop;
+    background-color: gray;
+}
+
