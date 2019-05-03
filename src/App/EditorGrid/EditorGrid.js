@@ -280,7 +280,7 @@ class EditorGrid extends Component {
 
     generateToolBox = () => {
         let lst = [];
-        let items = ["path", "base-red", "base-blue", "gold", "edit", "done"];
+        let items = ["path", "base-blue", "base-red", "gold", "edit", "done"];
         // let items = ["path", "wall", "base-red", "base-blue", "worm", "gold", "edit", "done"];
         for (let i = 0; i < items.length; i++) {
             let type = items[i];
