@@ -9,7 +9,7 @@ import {runSequentialMove} from "../actions";
 
 class App extends Component {
     render() {
-        let {height} = this.props;
+        let {height, nextMove, totalMoves} = this.props;
         if (height === void 0) {
             height = 0;
         }
@@ -26,15 +26,17 @@ class App extends Component {
                     </div>
                 </div>
                 {/*For testing*/}
-                <button onClick={() => this.props.runSequentialMove(false)}>Previous Move</button>
-                <button onClick={() => this.props.runSequentialMove(true)}>Next Move</button>
+                <button onClick={() => this.props.runSequentialMove(false)}
+                        disabled={nextMove === 0}>Previous Move</button>
+                <button onClick={() => this.props.runSequentialMove(true)}
+                        disabled={nextMove >= totalMoves}>Next Move</button>
             </div>
         );
     }
 }
 
-const mapStateToProps = ({board: {height}}) => {
-    return {height};
+const mapStateToProps = ({board: {height, nextMove, moves}}) => {
+    return {height, nextMove, totalMoves: moves.length};
 };
 
 // for testing
