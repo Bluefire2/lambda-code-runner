@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/gold-concurrency/precache-manifest.cdec913822c0029ed0643f7d3d874d1e.js"
+  "/lambdaball/precache-manifest.7f1e330ccdd7ebea7e12954ff0b3fe8c.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/gold-concurrency/index.html", {
+workbox.routing.registerNavigationRoute("/lambdaball/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
