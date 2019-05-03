@@ -22,11 +22,6 @@ export default (state = initialState, action) => {
             const {map, width, height, teams, max_gold: maxGold, max_bots: maxBots, moves} = action.payload,
                 squaredMap = squarify(map, height, width),
                 bases = getBases(squaredMap),
-                // for testing: delete after processMove is done.
-                testBots = [
-                    {handle: 0, team: "Red", xy: bases["Red"], gold: 0, lastDeposit: [], wormHistory: []},
-                    {handle: 1, team: "Blue", xy: bases["Blue"], gold: 0, lastDeposit: [], wormHistory: []},
-                ],
                 teamsWithScores = {};
             teams.forEach(team => teamsWithScores[team] = 0);
             return {
