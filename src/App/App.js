@@ -43,7 +43,7 @@ class App extends Component {
 
                         <button onClick={() => this.props.stopGame()} disabled={!play}>Stop</button>
 
-                        <button onClick={() => this.props.playGame()} disabled={play}> Play</button>
+                        <button onClick={() => this.props.playGame()} disabled={play}>Play</button>
 
                         <button onClick={() => this.props.runSequentialMove(true)}
                                 disabled={play || nextMove >= totalMoves}>Next Move</button>
