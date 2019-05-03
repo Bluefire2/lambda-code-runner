@@ -36,7 +36,8 @@ class App extends Component {
 }
 
 const mapStateToProps = ({board: {height, nextMove, moves}}) => {
-    return {height, nextMove, totalMoves: moves.length};
+    const totalMoves = typeof moves === "undefined" ? 0 : moves.length;
+    return {height, nextMove, totalMoves: totalMoves};
 };
 
 // for testing
