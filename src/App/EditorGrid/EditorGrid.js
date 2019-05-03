@@ -22,7 +22,8 @@ class EditorGrid extends Component {
             max_bots: 4,
             vision: 2,
             show: false,
-            end_goal: 100,
+            end_goal: 50,
+            max_moves: 300
         }
     }
 
@@ -76,6 +77,10 @@ class EditorGrid extends Component {
                 this.setState({
                     end_goal: newValue
                 })
+            } else if (field === 'max_moves') {
+                this.setState({
+                    max_moves: newValue
+                })
             }
         }
     }
@@ -99,7 +104,7 @@ class EditorGrid extends Component {
             for (let x = 0; x < w; x++) {
                 row.push({
                     type: TILE.PATH,
-                    cost: 10
+                    cost: 5
                 });
             }
             cells.push(row);
@@ -196,7 +201,7 @@ class EditorGrid extends Component {
 
     generateEditItem = () => {
         const pos = this.state.editTile;
-        let form = "";
+        let form = <p>This tile is not editable.</p>;
         if (pos !== null && pos !== undefined && this.inBounds(pos)) {
             const tile = this.state.grid[pos[1]][pos[0]];
             // if (tile.type === TILE.PATH) {
@@ -225,30 +230,32 @@ class EditorGrid extends Component {
                         pos, 'amount',
                         Number(e.target.value))}
                     />
+                    <p>Note: Gold tiles can only have amounts between 1 ~ 9</p>
                     </div>
-            } else if (tile.type === TILE.WORM) {
-                form = 
-                    <div className="edit-item">
-                    <div className="edit-item-label">To Position X: </div>
-                    <input 
-                    type="number" 
-                    key={2}
-                    value={this.state.grid[pos[1]][pos[0]].out[0]}
-                    onChange={(e)=>this.updateEditResult(
-                        pos, 'x',
-                        Number(e.target.value))} />
-                    <div className="edit-item-label">Y: </div>
-                    <input 
-                    type="number" 
-                    key={3}
-                    value={this.state.grid[pos[1]][pos[0]].out[1]}
-                    onChange={(e)=>this.updateEditResult(
-                        pos, 'y',
-                        Number(e.target.value))} />
-                    <p>Note: Bottom left grid is (0,0)</p>
-                    <p>Out position must be a Path.</p>
-                    </div>
-            }
+            } 
+            // else if (tile.type === TILE.WORM) {
+            //     form = 
+            //         <div className="edit-item">
+            //         <div className="edit-item-label">To Position X: </div>
+            //         <input 
+            //         type="number" 
+            //         key={2}
+            //         value={this.state.grid[pos[1]][pos[0]].out[0]}
+            //         onChange={(e)=>this.updateEditResult(
+            //             pos, 'x',
+            //             Number(e.target.value))} />
+            //         <div className="edit-item-label">Y: </div>
+            //         <input 
+            //         type="number" 
+            //         key={3}
+            //         value={this.state.grid[pos[1]][pos[0]].out[1]}
+            //         onChange={(e)=>this.updateEditResult(
+            //             pos, 'y',
+            //             Number(e.target.value))} />
+            //         <p>Note: Bottom left grid is (0,0)</p>
+            //         <p>Out position must be a Path.</p>
+            //         </div>
+            // }
         }
         return form;
         
@@ -273,7 +280,8 @@ class EditorGrid extends Component {
 
     generateToolBox = () => {
         let lst = [];
-        let items = ["path", "wall", "base-red", "base-blue", "worm", "gold", "edit", "done"];
+        let items = ["path", "base-blue", "base-red", "gold", "edit", "done"];
+        // let items = ["path", "wall", "base-red", "base-blue", "worm", "gold", "edit", "done"];
         for (let i = 0; i < items.length; i++) {
             let type = items[i];
             lst.push(
@@ -426,6 +434,7 @@ class EditorGrid extends Component {
             max_gold: this.state.max_gold,
             max_bots: this.state.max_bots,
             end_goal: this.state.end_goal,
+            max_moves: this.state.max_moves,
             teams: ["Blue", "Red"],
             vision: 2,
             map: map,
@@ -443,19 +452,6 @@ class EditorGrid extends Component {
         
         // Save the file
         saveAs(fileToSave, fileName);
-
-        // let text = JSON.stringify(obj);
-        // let filename = "map.json";
-        // let element = document.createElement('a');
-        // element.setAttribute('href', 'data:application/octet-stream;charset=utf-8,' + encodeURIComponent(text));
-        // element.setAttribute('download', filename);
-
-        // element.style.display = 'none';
-        // document.body.appendChild(element);
-
-        // element.click();
-
-        // document.body.removeChild(element);
     }
 
 
@@ -507,6 +503,13 @@ class EditorGrid extends Component {
                             type="number" name="end_goal" 
                             value={this.state.end_goal}
                             onChange={(e) => this.changeParams('end_goal',Number(e.target.value))}></input>
+                        </div>
+                        <div className='input-item'>
+                            <div className="label">Max Moves: </div>
+                            <input 
+                            type="number" name="max_moves" 
+                            value={this.state.max_moves}
+                            onChange={(e) => this.changeParams('max_moves',Number(e.target.value))}></input>
                         </div>
                     </div>
                     <TableDragSelect

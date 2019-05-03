@@ -19,7 +19,7 @@ export default ({tile, robots}) => {
             //no gold left, switch to path
             tile = {
                 type: TILE.PATH,
-                cost: 10
+                cost: 5
             };
             type = TILE.PATH;
         } else {
@@ -28,9 +28,10 @@ export default ({tile, robots}) => {
         
     }
     
-    if (type === TILE.PATH) {
-        contents = tile.cost;
-    }
+    // show cost of path
+    // if (type === TILE.PATH) {
+    //     contents = tile.cost;
+    // }
 
     const bots = robots.map(({team, handle}) => {
         if (team === "Red") {
