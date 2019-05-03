@@ -1,5 +1,5 @@
 import {arrayBufferToString} from "../util";
-import {actionChannel, call, put, race, take} from "redux-saga/effects";
+import {actionChannel, call, put, race, take, select} from "redux-saga/effects";
 
 export const Action = {
     SEQUENTIAL_MOVE_ACTION: "SMOVE",
@@ -19,12 +19,13 @@ export function* animateSaga() {
     const channel = yield actionChannel(Action.SEQUENTIAL_MOVE_CYCLE);
     while (yield take(channel)) {
         while (true) {
+            const outOfMoves = yield select(state => state.board.nextMove >= state.board.moves.length);
             const {stopped} = yield race({
                 wait: call(wait, 500),
                 stopped: take(Action.SEQUENTIAL_MOVE_CYCLE_STOP)
             });
 
-            if (!stopped) {
+            if (!stopped && !outOfMoves) {
                 yield put(runSequentialMove());
             } else {
                 break;
