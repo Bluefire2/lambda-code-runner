@@ -9,6 +9,14 @@ import {bindActionCreators} from "redux";
 import {runSequentialMove} from "../actions";
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+
+        };
+    }
+
     render() {
         let {height, nextMove, totalMoves, initialized} = this.props;
         if (height === void 0) {
