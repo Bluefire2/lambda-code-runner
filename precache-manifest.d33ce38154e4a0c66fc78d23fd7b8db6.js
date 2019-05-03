@@ -1,10 +1,10 @@
 self.__precacheManifest = [
   {
-    "revision": "a1be2f6663c7501b1680",
-    "url": "/lambdaball/static/css/main.a6072ecc.chunk.css"
+    "revision": "d02be48b9e5b58ba0433",
+    "url": "/lambdaball/static/css/main.39acd77d.chunk.css"
   },
   {
-    "revision": "a1be2f6663c7501b1680",
+    "revision": "d02be48b9e5b58ba0433",
     "url": "/lambdaball/static/js/main.e7137047.chunk.js"
   },
   {
@@ -32,15 +32,15 @@ self.__precacheManifest = [
     "url": "/lambdaball/static/media/blue_robot_128.74e0a7af.svg"
   },
   {
-    "revision": "46ed562ea1c98c5600da3f9e2993a1e5",
-    "url": "/lambdaball/static/media/homebase_red.46ed562e.png"
-  },
-  {
     "revision": "f0e536afb6c057b3dff9d0e74f26102b",
     "url": "/lambdaball/static/media/homebase_blue.f0e536af.png"
   },
   {
-    "revision": "6fd715ddab7912620ab14128f64dc25f",
+    "revision": "46ed562ea1c98c5600da3f9e2993a1e5",
+    "url": "/lambdaball/static/media/homebase_red.46ed562e.png"
+  },
+  {
+    "revision": "6764a3dce111a00d86d7847ee0f757b8",
     "url": "/lambdaball/index.html"
   }
 ];
