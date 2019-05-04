@@ -28,6 +28,7 @@ export function* animateSaga() {
             if (!stopped && !outOfMoves) {
                 yield put(runSequentialMove());
             } else {
+                if (outOfMoves) yield put(stopGame());
                 break;
             }
         }
