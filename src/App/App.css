@@ -50,3 +50,8 @@
     color: #f4f4f4;
     cursor: pointer;
 }
+
+.cool-button:disabled, .cool-button[disabled] {
+    opacity: 0.5;
+    cursor: no-drop;
+}
