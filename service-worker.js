@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/lambda-code-runner/precache-manifest.c3c6c3e11b78f1d26fd88fca9223bc02.js"
+  "/lambda-code-runner/precache-manifest.d74158032d2a20d8ae9870e80abff71b.js"
 );
 
 workbox.clientsClaim();
