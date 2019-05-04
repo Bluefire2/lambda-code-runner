@@ -19,9 +19,11 @@ export function* animateSaga() {
     const channel = yield actionChannel(Action.SEQUENTIAL_MOVE_CYCLE);
     while (yield take(channel)) {
         while (true) {
-            const outOfMoves = yield select(state => state.board.nextMove >= state.board.moves.length);
+            const outOfMoves = yield select(state => state.board.nextMove >= state.board.moves.length),
+                delay = yield select(state => state.gameStatus.playDelay);
+
             const {stopped} = yield race({
-                wait: call(wait, 500),
+                wait: call(wait, delay),
                 stopped: take(Action.SEQUENTIAL_MOVE_CYCLE_STOP)
             });
 
